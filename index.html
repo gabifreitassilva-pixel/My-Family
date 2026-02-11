@@ -1,31 +1,85 @@
-<!-- HOME -->
-<div id="home" class="section active">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyFamily Personal</title>
 
-<div class="card" id="saudacaoCard">
-<h3 class="highlight" id="saudacao"></h3>
-<p id="dataHoje"></p>
-<p><b>Bora para mais um treino! 💪</b></p>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:#0c0c12;
+color:#fff;
+}
+header{
+padding:15px;
+background:#12121a;
+text-align:center;
+color:#c77dff;
+font-weight:bold;
+}
+.section{display:none;padding:20px;padding-bottom:100px;}
+.active{display:block;}
+.card{
+background:#1a1a25;
+padding:15px;
+border-radius:15px;
+margin-bottom:15px;
+}
+.bottom-nav{
+position:fixed;
+bottom:0;
+width:100%;
+display:flex;
+justify-content:space-around;
+background:#12121a;
+padding:10px 0;
+border-top:1px solid #2a2a3d;
+}
+.bottom-nav div{
+color:#c77dff;
+text-align:center;
+cursor:pointer;
+font-size:12px;
+}
+.bottom-nav span{display:block;font-size:24px;}
+</style>
+</head>
+<body>
+
+<header>MyFamily Personal</header>
+
+<div id="conteudo"></div>
+
+<div class="bottom-nav">
+<div onclick="carregar('home.html')"><span class="material-icons">home</span>Home</div>
+<div onclick="carregar('treino.html')"><span class="material-icons">fitness_center</span>Treino</div>
+<div onclick="carregar('medidas.html')"><span class="material-icons">straighten</span>Medidas</div>
+<div onclick="carregar('receitas.html')"><span class="material-icons">restaurant</span>Receitas</div>
+<div onclick="carregar('suplementos.html')"><span class="material-icons">science</span>Suplementos</div>
+<div onclick="carregar('perfil.html')"><span class="material-icons">person</span>Perfil</div>
 </div>
 
-<div class="banner">
-<h2>Transforme seu corpo. Eleve sua autoestima.</h2>
-</div>
+<script src="data/frases.js"></script>
+<script src="data/dicas.js"></script>
+<script src="data/receitas.js"></script>
+<script src="data/suplementos.js"></script>
+<script src="data/exercicios.js"></script>
 
-<div class="card">
-<h3 class="highlight">Motivação</h3>
-<p id="frase"></p>
-</div>
+<script>
+function carregar(pagina){
+fetch(pagina)
+.then(res=>res.text())
+.then(html=>{
+document.getElementById("conteudo").innerHTML=html;
+});
+}
 
-<div class="card">
-<h3 class="highlight">Dica Fitness</h3>
-<p id="dica1"></p>
-</div>
+carregar('home.html');
+</script>
 
-<div class="card">
-<h3 class="highlight">Dica Fitness</h3>
-<p id="dica2"></p>
-</div>
-
-<img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?auto=format&fit=crop&w=600&q=60" width="100%" style="border-radius:20px;margin-top:10px;">
-
-</div>
+</body>
+</html>
