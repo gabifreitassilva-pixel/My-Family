@@ -1,0 +1,15 @@
+<div id="listaReceitas"></div>
+
+<script>
+let html="";
+receitas.forEach(r=>{
+html+=`
+<div class="card">
+<h4>${r.nome}</h4>
+<p><b>Ingredientes:</b> ${r.ingredientes}</p>
+<p><b>Modo:</b> ${r.modo}</p>
+</div>
+`;
+});
+document.getElementById("listaReceitas").innerHTML=html;
+</script>
