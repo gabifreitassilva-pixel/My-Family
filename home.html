@@ -1,0 +1,27 @@
+<div class="card">
+<h3>Motivação</h3>
+<p id="fraseHome"></p>
+</div>
+
+<div class="card">
+<h3>Dica 1</h3>
+<p id="dica1"></p>
+</div>
+
+<div class="card">
+<h3>Dica 2</h3>
+<p id="dica2"></p>
+</div>
+
+<script>
+document.getElementById("fraseHome").innerText =
+frases[Math.floor(Math.random()*frases.length)];
+
+let r1=Math.floor(Math.random()*dicas.length);
+let r2;
+do{r2=Math.floor(Math.random()*dicas.length);} 
+while(r1===r2);
+
+document.getElementById("dica1").innerText=dicas[r1];
+document.getElementById("dica2").innerText=dicas[r2];
+</script>
