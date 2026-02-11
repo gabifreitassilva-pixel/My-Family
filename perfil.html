@@ -1,0 +1,22 @@
+<div class="card">
+<h3>Perfil</h3>
+
+<input id="peso" placeholder="Peso (kg)">
+<input id="altura" placeholder="Altura (m)">
+<p id="imc"></p>
+
+<button onclick="calcularIMC()">Calcular IMC</button>
+
+</div>
+
+<script>
+function calcularIMC(){
+let peso=parseFloat(document.getElementById("peso").value);
+let altura=parseFloat(document.getElementById("altura").value);
+
+if(peso>0 && altura>0){
+let imc=(peso/(altura*altura)).toFixed(2);
+document.getElementById("imc").innerText="IMC: "+imc;
+}
+}
+</script>
