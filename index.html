@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MyFamily Personal</title>
-
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
@@ -22,15 +21,17 @@ color:#c77dff;
 font-weight:bold;
 font-size:20px;
 }
+.section{
+display:none;
+padding:20px;
+padding-bottom:100px;
+}
+.active{display:block;}
 .card{
 background:#1a1a25;
 padding:15px;
 border-radius:15px;
 margin-bottom:15px;
-}
-.section{
-padding:20px;
-padding-bottom:100px;
 }
 .bottom-nav{
 position:fixed;
@@ -58,15 +59,75 @@ font-size:24px;
 
 <header>MyFamily Personal</header>
 
-<div id="conteudo" class="section"></div>
+<!-- HOME -->
+<div id="home" class="section active">
 
+<div class="card">
+<h3 id="saudacao"></h3>
+<p id="dataHoje"></p>
+<p><b>Bora para mais um treino! 💪</b></p>
+</div>
+
+<div class="card">
+<h3>Motivação</h3>
+<p id="fraseHome"></p>
+</div>
+
+<div class="card">
+<h3>Dica Fitness</h3>
+<p id="dica1"></p>
+</div>
+
+<div class="card">
+<h3>Dica Fitness</h3>
+<p id="dica2"></p>
+</div>
+
+</div>
+
+<!-- TREINO -->
+<div id="treino" class="section">
+<div class="card">
+<h3>Treino do Dia</h3>
+<div id="treinoHoje"></div>
+</div>
+</div>
+
+<!-- RECEITAS -->
+<div id="receitas" class="section">
+<div id="listaReceitas"></div>
+</div>
+
+<!-- SUPLEMENTOS -->
+<div id="suplementos" class="section">
+<div class="card">
+<h3>Ganho de Massa</h3>
+<p id="massa"></p>
+</div>
+
+<div class="card">
+<h3>Perda de Peso</h3>
+<p id="perda"></p>
+</div>
+</div>
+
+<!-- PERFIL -->
+<div id="perfil" class="section">
+<div class="card">
+<input id="peso" placeholder="Peso (kg)">
+<input id="altura" placeholder="Altura (m)">
+<p id="imc"></p>
+<button onclick="calcularIMC()">Calcular IMC</button>
+</div>
+</div>
+
+<!-- MENU -->
 <div class="bottom-nav">
-<div onclick="carregar('home.html')"><span class="material-icons">home</span>Home</div>
-<div onclick="carregar('treino.html')"><span class="material-icons">fitness_center</span>Treino</div>
-<div onclick="carregar('medidas.html')"><span class="material-icons">straighten</span>Medidas</div>
-<div onclick="carregar('receitas.html')"><span class="material-icons">restaurant</span>Receitas</div>
-<div onclick="carregar('suplementos.html')"><span class="material-icons">science</span>Suplementos</div>
-<div onclick="carregar('perfil.html')"><span class="material-icons">person</span>Perfil</div>
+<div onclick="show('home')"><span class="material-icons">home</span>Home</div>
+<div onclick="show('treino')"><span class="material-icons">fitness_center</span>Treino</div>
+<div onclick="show('receitas')"><span class="material-icons">restaurant</span>Receitas</div>
+<div onclick="show('suplementos')"><span class="material-icons">science</span>Suplementos</div>
+<div onclick="show('perfil')"><span class="material-icons">person</span>Perfil</div>
 </div>
 
 <script src="datafrase.js"></script>
@@ -75,17 +136,77 @@ font-size:24px;
 <script src="datasuplementos.js"></script>
 <script src="dataexercicios.js"></script>
 
-
-
 <script>
-function carregar(pagina){
-fetch(pagina)
-.then(res=>res.text())
-.then(html=>{
-document.getElementById("conteudo").innerHTML = html;
-});
+
+/* Navegação */
+function show(id){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
 }
-carregar('home.html');
+
+/* Saudação */
+function gerarSaudacao(){
+let agora=new Date();
+let hora=agora.getHours();
+let saudacao=hora<12?"Bom dia ☀️":hora<18?"Boa tarde 🌤️":"Boa noite 🌙";
+
+let dias=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+let meses=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+
+document.getElementById("saudacao").innerText=saudacao;
+document.getElementById("dataHoje").innerText=
+"Hoje é "+dias[agora.getDay()]+", "+agora.getDate()+" de "+meses[agora.getMonth()]+" de "+agora.getFullYear();
+}
+gerarSaudacao();
+
+/* Frase */
+document.getElementById("fraseHome").innerText=
+frases[Math.floor(Math.random()*frases.length)];
+
+/* Dicas */
+let r1=Math.floor(Math.random()*dicas.length);
+let r2;
+do{r2=Math.floor(Math.random()*dicas.length);}while(r1===r2);
+
+document.getElementById("dica1").innerText=dicas[r1];
+document.getElementById("dica2").innerText=dicas[r2];
+
+/* Treino */
+let dia=new Date().getDate();
+let treino=exercicios[dia-1];
+let html="<ul>";
+treino.lista.forEach(e=>{html+="<li>"+e+"</li>";});
+html+="</ul>";
+document.getElementById("treinoHoje").innerHTML=html;
+
+/* Receitas */
+let htmlReceitas="";
+receitas.forEach(r=>{
+htmlReceitas+=`
+<div class="card">
+<h4>${r.nome}</h4>
+<p>${r.ingredientes}</p>
+</div>
+`;
+});
+document.getElementById("listaReceitas").innerHTML=htmlReceitas;
+
+/* Suplementos */
+document.getElementById("massa").innerText=
+suplementos.ganho_massa.join(", ");
+document.getElementById("perda").innerText=
+suplementos.perda_peso.join(", ");
+
+/* IMC */
+function calcularIMC(){
+let peso=parseFloat(document.getElementById("peso").value);
+let altura=parseFloat(document.getElementById("altura").value);
+if(peso>0 && altura>0){
+let imc=(peso/(altura*altura)).toFixed(2);
+document.getElementById("imc").innerText="IMC: "+imc;
+}
+}
+
 </script>
 
 </body>
