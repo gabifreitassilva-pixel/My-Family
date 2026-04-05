@@ -1,213 +1,1329 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MyFamily Personal</title>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Family Personal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração de cores personalizadas -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lilas: '#f3e8ff', // Fundo lilás suave (purple-100)
+                        roxo: {
+                            500: '#a855f7', // Roxo vibrante
+                            700: '#7e22ce', // Roxo escuro para textos e botões principais
+                            900: '#581c87', // Roxo muito escuro para títulos
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Ícones -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Oculta scrollbar mas mantém a funcionalidade */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Animações suaves */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-<style>
-body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:#0c0c12;
-color:#fff;
-}
-header{
-padding:15px;
-background:#12121a;
-text-align:center;
-color:#c77dff;
-font-weight:bold;
-font-size:20px;
-}
-.section{
-display:none;
-padding:20px;
-padding-bottom:100px;
-}
-.active{display:block;}
-.card{
-background:#1a1a25;
-padding:15px;
-border-radius:15px;
-margin-bottom:15px;
-}
-.bottom-nav{
-position:fixed;
-bottom:0;
-width:100%;
-display:flex;
-justify-content:space-around;
-background:#12121a;
-padding:10px 0;
-border-top:1px solid #2a2a3d;
-}
-.bottom-nav div{
-color:#c77dff;
-text-align:center;
-cursor:pointer;
-font-size:12px;
-}
-.bottom-nav span{
-display:block;
-font-size:24px;
-}
-</style>
+        /* Checkbox customizado */
+        .exercise-checkbox:checked + div {
+            background-color: #7e22ce;
+            border-color: #7e22ce;
+        }
+        .exercise-checkbox:checked + div svg {
+            opacity: 1;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-lilas text-slate-800 font-sans h-screen flex justify-center overflow-hidden">
 
-<header>MyFamily Personal</header>
+    <!-- Container simulando tela de celular -->
+    <div class="w-full max-w-md bg-lilas h-full flex flex-col relative shadow-2xl overflow-hidden">
+        
+        <!-- Header -->
+        <header class="bg-roxo-700 text-white p-5 pt-8 rounded-b-[2rem] shadow-lg z-10">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">My Family Personal</h1>
+                    <p class="text-purple-200 text-sm opacity-90">Foco no Emagrecimento</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="openPasswordModal()" class="bg-white/20 p-2 rounded-full backdrop-blur-sm hover:bg-white/30 transition">
+                        <i data-lucide="settings" class="text-white w-5 h-5"></i>
+                    </button>
+                    <div class="bg-white/20 p-2 rounded-full backdrop-blur-sm">
+                        <i data-lucide="flame" class="text-orange-400 w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-<!-- HOME -->
-<div id="home" class="section active">
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-1 overflow-y-auto no-scrollbar pb-24 p-5">
+            
+            <!-- ABA INICIAL (HOME) -->
+            <section id="tab-home" class="fade-in space-y-6">
+                <!-- Data e Saudação -->
+                <div class="text-center mt-2">
+                    <p id="current-date" class="text-roxo-700 font-semibold uppercase tracking-wider text-xs mb-1"></p>
+                    <h2 id="greeting" class="text-3xl font-extrabold text-roxo-900">Bom dia, Guerreiro(a)!</h2>
+                </div>
 
-<div class="card">
-<h3 id="saudacao"></h3>
-<p id="dataHoje"></p>
-<p><b>Bora para mais um treino! 💪</b></p>
-</div>
+                <!-- Card de Motivação (Sempre presente) -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-purple-100 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-10">
+                        <i data-lucide="quote" class="w-24 h-24 text-roxo-700"></i>
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <i data-lucide="sparkles" class="text-roxo-500 w-5 h-5"></i>
+                        <h3 class="font-bold text-roxo-900">Mensagem do Dia</h3>
+                    </div>
+                    <p id="motivational-quote" class="text-lg text-slate-700 font-medium italic relative z-10">
+                        "O suor de hoje é o sorriso de amanhã. Não desista!"
+                    </p>
+                </div>
 
-<div class="card">
-<h3>Motivação</h3>
-<p id="fraseHome"></p>
-</div>
+                <!-- Resumo da Semana -->
+                <div class="bg-roxo-700 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
+                    <div class="absolute right-0 bottom-0 opacity-20 transform translate-x-4 translate-y-4">
+                        <i data-lucide="activity" class="w-32 h-32"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-1 relative z-10">Fase Atual</h3>
+                    <p id="week-phase-title" class="text-purple-200 mb-4 text-sm relative z-10">Calculando fase da semana...</p>
+                    
+                    <button onclick="switchTab('workouts')" class="bg-white text-roxo-900 w-full py-3 rounded-xl font-bold shadow-sm flex items-center justify-center gap-2 hover:bg-gray-50 transition relative z-10">
+                        <i data-lucide="play" class="w-5 h-5"></i>
+                        Começar Treino de Hoje
+                    </button>
+                </div>
 
-<div class="card">
-<h3>Dica Fitness</h3>
-<p id="dica1"></p>
-</div>
+                <!-- Dica rápida -->
+                <div class="bg-white rounded-2xl p-4 flex gap-4 items-center shadow-sm border border-purple-100">
+                    <div class="bg-purple-100 p-3 rounded-full text-roxo-700">
+                        <i data-lucide="droplet" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-roxo-900 text-sm">Lembrete de Hidratação</h4>
+                        <p class="text-xs text-slate-500">Para emagrecer, beba pelo menos 35ml de água por kg corporal hoje.</p>
+                    </div>
+                </div>
 
-<div class="card">
-<h3>Dica Fitness</h3>
-<p id="dica2"></p>
-</div>
+                <!-- Lembrete Suplementação -->
+                <div class="bg-white rounded-2xl p-4 flex gap-4 items-center shadow-sm border border-purple-100">
+                    <div class="bg-purple-100 p-3 rounded-full text-roxo-700">
+                        <i data-lucide="pill" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-roxo-900 text-sm">Suplementação</h4>
+                        <p class="text-xs text-slate-500">Não esqueça a sua creatina de hoje! Essencial para manter a força e massa magra.</p>
+                    </div>
+                </div>
+            </section>
 
-</div>
+            <!-- ABA DE TREINOS -->
+            <section id="tab-workouts" class="hidden fade-in space-y-5">
+                <div class="flex justify-between items-end mb-2">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-roxo-900">Treinos da Semana</h2>
+                    </div>
+                    <button onclick="openTechniqueModal()" class="text-roxo-500 text-xs font-bold underline flex items-center gap-1">
+                        <i data-lucide="book-open" class="w-4 h-4"></i> Dicionário
+                    </button>
+                </div>
 
-<!-- TREINO -->
-<div id="treino" class="section">
-<div class="card">
-<h3>Treino do Dia</h3>
-<div id="treinoHoje"></div>
-</div>
-</div>
+                <!-- Abas de Navegação dos Treinos (Agora com flex-wrap para mostrar todos) -->
+                <div id="workout-tabs" class="flex flex-wrap gap-2 mb-2 pb-2">
+                    <!-- Os botões A, B, C, D e E serão injetados aqui via JS -->
+                </div>
 
-<!-- RECEITAS -->
-<div id="receitas" class="section">
-<div id="listaReceitas"></div>
-</div>
+                <p id="workout-focus" class="text-roxo-700 text-sm font-medium mb-2">Foco: Corpo Todo (HIIT)</p>
 
-<!-- SUPLEMENTOS -->
-<div id="suplementos" class="section">
-<div class="card">
-<h3>Ganho de Massa</h3>
-<p id="massa"></p>
-</div>
+                <div id="exercise-list" class="space-y-4">
+                    <!-- Os exercícios serão injetados via JavaScript aqui -->
+                </div>
 
-<div class="card">
-<h3>Perda de Peso</h3>
-<p id="perda"></p>
-</div>
-</div>
+                <div class="pt-4 pb-8">
+                    <button onclick="finishWorkout()" class="bg-roxo-700 text-white w-full py-4 rounded-2xl font-bold shadow-lg flex items-center justify-center gap-2 hover:bg-roxo-900 transition">
+                        <i data-lucide="check-circle" class="w-6 h-6"></i>
+                        Finalizar Treino
+                    </button>
+                </div>
+            </section>
 
-<!-- PERFIL -->
-<div id="perfil" class="section">
-<div class="card">
-<input id="peso" placeholder="Peso (kg)">
-<input id="altura" placeholder="Altura (m)">
-<p id="imc"></p>
-<button onclick="calcularIMC()">Calcular IMC</button>
-</div>
-</div>
+            <!-- ABA DE DIETAS -->
+            <section id="tab-diets" class="hidden fade-in space-y-5 pb-10">
+                <div class="flex justify-between items-end mb-2">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-roxo-900">Plano Alimentar</h2>
+                        <p class="text-sm text-slate-500">A mágica acontece aqui na cozinha!</p>
+                    </div>
+                </div>
 
-<!-- MENU -->
-<div class="bottom-nav">
-<div onclick="show('home')"><span class="material-icons">home</span>Home</div>
-<div onclick="show('treino')"><span class="material-icons">fitness_center</span>Treino</div>
-<div onclick="show('receitas')"><span class="material-icons">restaurant</span>Receitas</div>
-<div onclick="show('suplementos')"><span class="material-icons">science</span>Suplementos</div>
-<div onclick="show('perfil')"><span class="material-icons">person</span>Perfil</div>
-</div>
+                <!-- Abas de Navegação das Dietas (Agora com flex-wrap para mostrar todas) -->
+                <div id="diet-tabs" class="flex flex-wrap gap-2 mb-4 pb-2">
+                    <!-- Gerado via JS -->
+                </div>
 
-<script src="datafrase.js"></script>
-<script src="datadicas.js"></script>
-<script src="datareceitas.js"></script>
-<script src="datasuplementos.js"></script>
-<script src="dataexercicios.js"></script>
+                <!-- Linha do Tempo das Refeições -->
+                <div id="diet-list" class="space-y-6 relative border-l-2 border-purple-200 ml-4 pl-6">
+                    <!-- Gerado via JS -->
+                </div>
+            </section>
 
-<script>
+            <!-- ABA ADMIN (GERENCIAMENTO DE TREINOS E DIETAS) -->
+            <section id="tab-admin" class="hidden fade-in space-y-5 pb-10">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-roxo-900">Painel de Edição</h2>
+                    <p class="text-xs text-slate-500 mt-1">Selecione abaixo o que deseja gerenciar.</p>
+                </div>
 
-/* Navegação */
-function show(id){
-document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
+                <!-- Abas Internas do Administrador -->
+                <div class="flex bg-slate-100 p-1 rounded-xl">
+                    <button id="admin-nav-treinos" onclick="switchAdminTab('treinos')" class="flex-1 py-2 text-sm font-bold rounded-lg bg-white text-roxo-700 shadow-sm transition">🏋️ Treinos</button>
+                    <button id="admin-nav-dietas" onclick="switchAdminTab('dietas')" class="flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:text-roxo-700 transition">🥗 Dietas</button>
+                </div>
 
-/* Saudação */
-function gerarSaudacao(){
-let agora=new Date();
-let hora=agora.getHours();
-let saudacao=hora<12?"Bom dia ☀️":hora<18?"Boa tarde 🌤️":"Boa noite 🌙";
+                <!-- Seção de Edição de Treinos -->
+                <div id="admin-treinos-section" class="space-y-4">
+                    <div id="admin-list" class="space-y-4">
+                        <!-- Gerado via JS -->
+                    </div>
+                </div>
 
-let dias=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
-let meses=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+                <!-- Seção de Edição de Dietas -->
+                <div id="admin-dietas-section" class="space-y-4 hidden">
+                    <div id="admin-diet-list" class="space-y-4">
+                        <!-- Gerado via JS -->
+                    </div>
+                </div>
+            </section>
 
-document.getElementById("saudacao").innerText=saudacao;
-document.getElementById("dataHoje").innerText=
-"Hoje é "+dias[agora.getDay()]+", "+agora.getDate()+" de "+meses[agora.getMonth()]+" de "+agora.getFullYear();
-}
-gerarSaudacao();
+        </main>
 
-/* Frase */
-document.getElementById("fraseHome").innerText=
-frases[Math.floor(Math.random()*frases.length)];
+        <!-- Bottom Navigation -->
+        <nav class="absolute bottom-0 w-full bg-white border-t border-purple-100 flex justify-around p-2 pb-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center p-2 text-roxo-700 transition w-16">
+                <i data-lucide="home" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] font-semibold">Início</span>
+            </button>
+            <button onclick="switchTab('workouts')" id="nav-workouts" class="flex flex-col items-center p-2 text-slate-400 hover:text-roxo-500 transition w-16">
+                <i data-lucide="dumbbell" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] font-semibold">Treinos</span>
+            </button>
+            <button onclick="switchTab('diets')" id="nav-diets" class="flex flex-col items-center p-2 text-slate-400 hover:text-roxo-500 transition w-16">
+                <i data-lucide="utensils" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] font-semibold">Dieta</span>
+            </button>
+        </nav>
 
-/* Dicas */
-let r1=Math.floor(Math.random()*dicas.length);
-let r2;
-do{r2=Math.floor(Math.random()*dicas.length);}while(r1===r2);
+        <!-- Modal de Técnicas -->
+        <div id="technique-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex flex-col justify-end">
+            <div class="bg-white rounded-t-3xl p-6 h-[80%] overflow-y-auto relative animate-[translateY_0.3s_ease-out]">
+                <button onclick="closeTechniqueModal()" class="absolute top-4 right-4 bg-gray-100 p-2 rounded-full text-gray-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <h3 class="text-2xl font-bold text-roxo-900 mb-6">Glossário de Técnicas</h3>
+                <div id="techniques-content" class="space-y-4">
+                    <!-- Conteúdo gerado via JS -->
+                </div>
+            </div>
+        </div>
 
-document.getElementById("dica1").innerText=dicas[r1];
-document.getElementById("dica2").innerText=dicas[r2];
+        <!-- Modal de Sucesso -->
+        <div id="success-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in">
+            <div class="bg-white rounded-3xl p-8 max-w-sm w-[90%] text-center shadow-2xl transform scale-100">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="trophy" class="w-10 h-10 text-green-500"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-roxo-900 mb-2">Treino Concluído!</h3>
+                <p class="text-slate-600 mb-6">Cada gota de suor é um passo a menos até o seu objetivo de emagrecimento. Orgulhe-se!</p>
+                <button onclick="closeSuccessModal()" class="bg-roxo-700 text-white w-full py-3 rounded-xl font-bold shadow-md">
+                    Incrível, continuar!
+                </button>
+            </div>
+        </div>
 
-/* Treino */
-let dia=new Date().getDate();
-let treino=exercicios[dia-1];
-let html="<ul>";
-treino.lista.forEach(e=>{html+="<li>"+e+"</li>";});
-html+="</ul>";
-document.getElementById("treinoHoje").innerHTML=html;
+        <!-- Modal Admin Editar Exercício -->
+        <div id="admin-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in">
+            <div class="bg-white rounded-3xl p-6 max-w-md w-[90%] shadow-2xl max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-roxo-900">Editar Exercício</h3>
+                    <button onclick="closeAdminModal()" class="bg-gray-100 p-2 rounded-full text-gray-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Nome do Exercício</label>
+                        <input id="admin-name" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="w-1/2">
+                            <label class="text-xs font-bold text-slate-500">Séries (Ex: 4 séries)</label>
+                            <input id="admin-sets" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                        </div>
+                        <div class="w-1/2">
+                            <label class="text-xs font-bold text-slate-500">Reps (Ex: 15)</label>
+                            <input id="admin-reps" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Técnica (Ex: Normal, Drop-set)</label>
+                        <input id="admin-tech" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">URL da Imagem / Vídeo</label>
+                        <input id="admin-media" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Como executar (Descrição)</label>
+                        <textarea id="admin-desc" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500"></textarea>
+                    </div>
+                    <button onclick="saveAdminEx()" class="bg-roxo-700 text-white w-full py-3 rounded-xl font-bold shadow-md mt-2">
+                        Salvar Exercício
+                    </button>
+                </div>
+            </div>
+        </div>
 
-/* Receitas */
-let htmlReceitas="";
-receitas.forEach(r=>{
-htmlReceitas+=`
-<div class="card">
-<h4>${r.nome}</h4>
-<p>${r.ingredientes}</p>
-</div>
-`;
-});
-document.getElementById("listaReceitas").innerHTML=htmlReceitas;
+        <!-- Modal Admin Editar Dieta -->
+        <div id="admin-diet-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in">
+            <div class="bg-white rounded-3xl p-6 max-w-md w-[90%] shadow-2xl max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-roxo-900">Editar Refeição</h3>
+                    <button onclick="closeAdminDietModal()" class="bg-gray-100 p-2 rounded-full text-gray-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Horário e Tipo (Ex: 08:00 - Café)</label>
+                        <input id="admin-diet-time" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Nome do Prato</label>
+                        <input id="admin-diet-name" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Resumo da Refeição</label>
+                        <input id="admin-diet-details" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Ingredientes (Um por linha)</label>
+                        <textarea id="admin-diet-ingredients" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">Modo de Preparo</label>
+                        <textarea id="admin-diet-recipe" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm text-slate-800 outline-none focus:border-roxo-500"></textarea>
+                    </div>
+                    <button onclick="saveAdminDietMeal()" class="bg-green-600 text-white w-full py-3 rounded-xl font-bold shadow-md mt-2">
+                        Salvar Refeição
+                    </button>
+                </div>
+            </div>
+        </div>
 
-/* Suplementos */
-document.getElementById("massa").innerText=
-suplementos.ganho_massa.join(", ");
-document.getElementById("perda").innerText=
-suplementos.perda_peso.join(", ");
+        <!-- Modal de Senha Admin -->
+        <div id="password-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in z-[60]">
+            <div class="bg-white rounded-3xl p-6 max-w-xs w-[90%] text-center shadow-2xl">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="lock" class="w-8 h-8 text-roxo-700"></i>
+                </div>
+                <h3 class="text-xl font-bold text-roxo-900 mb-2">Acesso Restrito</h3>
+                <p class="text-xs text-slate-500 mb-4">Área de edição. Digite a senha para continuar.</p>
+                <input type="password" id="admin-pass-input" placeholder="Senha" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-center mb-4 focus:outline-none focus:border-roxo-500 font-bold tracking-widest">
+                <div class="flex gap-2">
+                    <button onclick="closePasswordModal()" class="w-1/2 bg-gray-100 text-gray-600 py-2 rounded-xl font-bold">Voltar</button>
+                    <button onclick="checkPassword()" class="w-1/2 bg-roxo-700 text-white py-2 rounded-xl font-bold">Entrar</button>
+                </div>
+                <p id="password-error" class="text-red-500 text-xs mt-3 hidden font-semibold">Senha incorreta!</p>
+            </div>
+        </div>
 
-/* IMC */
-function calcularIMC(){
-let peso=parseFloat(document.getElementById("peso").value);
-let altura=parseFloat(document.getElementById("altura").value);
-if(peso>0 && altura>0){
-let imc=(peso/(altura*altura)).toFixed(2);
-document.getElementById("imc").innerText="IMC: "+imc;
-}
-}
+    </div>
 
-</script>
+    <script>
+        // --- BANCO DE DADOS LOCAL (INTELIGÊNCIA DO APP) ---
 
+        const quotes = [
+            "Não pare quando estiver cansado, pare quando terminar.",
+            "A dor que você sente hoje é a força que você sentirá amanhã.",
+            "O corpo alcança o que a mente acredita.",
+            "Um treino de 1 hora é 4% do seu dia. Sem desculpas.",
+            "Motivação faz você começar. Hábito faz você continuar.",
+            "Esqueça as falhas de ontem, foque na vitória de hoje.",
+            "Emagrecer é uma maratona, não um sprint. Mantenha o ritmo!",
+            "Sua única competição é a pessoa que você era ontem."
+        ];
+
+        const techniquesDb = {
+            "Circuito": "Faça todos os exercícios da lista sequencialmente, sem descanso entre eles. Descanse 1 a 2 minutos apenas no final do circuito. Excelente para queima de gordura.",
+            "HIIT": "Treino Intervalado de Alta Intensidade. Dê 100% do seu esforço no tempo de atividade e recupere-se no tempo de descanso.",
+            "Combinado": "Também chamado de Bi-set. Realize dois exercícios diferentes em sequência, sem descanso entre eles. Só descanse após terminar o segundo.",
+            "Drop-set": "Faça o exercício até não aguentar mais. Reduza o peso em cerca de 20-30% e faça até a falha novamente, sem descanso.",
+            "FST7": "Fascia Stretch Training. Faça 7 séries com apenas 30 segundos de descanso, alongando o músculo trabalhado durante esse intervalo.",
+            "Isometria": "Segure a contração muscular no ponto de maior tensão do movimento pelo tempo determinado (ex: segurar embaixo no leg press).",
+            "21": "Técnica dividida: 7 repetições na metade inferior do movimento, 7 na metade superior e 7 completas.",
+            "Cardio": "Exercício aeróbico contínuo. Foque em manter uma boa respiração para ajudar na recuperação e queima calórica.",
+            "Normal": "Execução padrão. Foque na contração muscular, com ritmo controlado.",
+            "Pirâmide": "Aumente a carga a cada nova série e diminua as repetições. (Ex: muito peso e menos repetições no final).",
+            "Tensão Contínua": "Não deixe o músculo relaxar em nenhum momento. Faça o movimento devagar e segure 2 a 3 segundos no ponto de maior dificuldade."
+        };
+
+        // Mudamos para "let" para que o Administrador consiga alterar tudo pelo próprio app
+        let exercisesDb = {
+            "Agachamento Livre": { desc: "Desça o quadril para trás mantendo as costas retas e o peito estufado.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Leg Press 45": { desc: "Empurre a plataforma com os pés. Controle bem a descida sem travar os joelhos.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Cadeira Extensora": { desc: "Sentado, estenda ambos os joelhos. Controle a volta do peso.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Cadeira Flexora": { desc: "Sentado na máquina, dobre os joelhos empurrando a almofada para baixo com os calcanhares.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Desenvolvimento com Halteres": { desc: "Sentado, eleve os halteres acima da cabeça até os braços esticarem, depois desça até a linha das orelhas.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Elevação Lateral": { desc: "Em pé, eleve os halteres lateralmente até a altura dos ombros, com os cotovelos levemente dobrados.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Face Pull": { desc: "Na polia com corda, puxe em direção ao rosto abrindo os cotovelos para trás.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            
+            "Supino Reto com Halteres": { desc: "Deitado no banco, empurre os halteres para cima alinhados com o peitoral. Desça controlando.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Crucifixo Inclinado": { desc: "No banco inclinado, abra os braços sentindo alongar o peitoral, depois feche.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Crossover na Polia": { desc: "No meio das polias altas, puxe os cabos cruzando as mãos na frente do corpo.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Rosca Direta Polia": { desc: "Faça rosca na polia baixa. Mantenha os cotovelos fixos ao lado do corpo.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Rosca Martelo 21": { desc: "Com halteres (neutra), 7 reps até o meio, 7 do meio ao topo, 7 completas.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Rosca Concentrada": { desc: "Sentado, apoie o cotovelo na coxa e faça a rosca focada no bíceps.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            
+            "Aquecimento c/ Elástico": { desc: "Faça passadas laterais com o elástico acima dos joelhos para ativar os glúteos.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Elevação de Quadril": { desc: "Deitado, eleve o quadril empurrando forte com os calcanhares. Aperte o glúteo.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Agachamento Sumô": { desc: "Pés bem afastados e pontas para fora. Agache focado na parte interna e glúteos.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Agachamento Búlgaro": { desc: "Apoie o pé de trás em um banco e faça o agachamento com a perna da frente.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Glúteos 4 Apoios Coice": { desc: "Em 4 apoios, empurre a perna flexionada para cima e para trás.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Glúteos Coice na Polia": { desc: "Em pé, de frente para a polia (presa no tornozelo), empurre a perna para trás.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Abdução de Quadril": { desc: "Na máquina, abra as pernas contra a resistência com a postura firme.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            
+            "Puxada Aberta": { desc: "Puxe a barra no peito abrindo bem as costas. Evite balançar o corpo.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Remada Máquina": { desc: "Puxe o peso na máquina mantendo o peito apoiado ou a postura reta.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Remada Curvada": { desc: "Incline o tronco à frente e puxe a barra/halteres em direção ao umbigo.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Tríceps Polia Corda": { desc: "Na polia alta, estique os braços empurrando a corda para baixo.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Tríceps Testa": { desc: "Deitado, desça a barra em direção à testa dobrando apenas os cotovelos.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Tríceps Francês": { desc: "Sentado, segure um halter atrás da cabeça e estique os braços para cima.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            
+            "Abdominal Supra Solo": { desc: "Deitado de barriga para cima, flexione o tronco tirando os ombros do chão.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Abdominal Infra no Banco": { desc: "Deitado, segure-se no banco e eleve as pernas estendidas até o quadril sair.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Prancha Isométrica": { desc: "Apoie os antebraços e pontas dos pés no chão. Mantenha o corpo reto.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Abdominal Escalador": { desc: "Na posição de prancha, puxe os joelhos alternadamente em direção ao peito.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Panturrilha no Leg Press": { desc: "Estenda as pontas dos pés empurrando a plataforma. Alongue no intervalo.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Extensão de Panturrilha": { desc: "Na máquina específica, fique na ponta dos pés estendendo bem a panturrilha.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" },
+            "Esteira HIIT": { desc: "Alterne entre 1 minuto correndo forte e 1 minuto caminhando.", media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" }
+        };
+
+        // Lógica de Semanas - também "let" para edição
+        let workoutSchedules = [
+            { 
+                title: "Perna e Ombro",
+                focus: "Volume e construção de pernas e ombros largos",
+                routine: [
+                    { name: "Agachamento Livre", sets: "4 séries", reps: "12 a 15", tech: "Normal" },
+                    { name: "Leg Press 45", sets: "4 séries", reps: "12 (Segurar 3s)", tech: "Isometria" },
+                    { name: "Cadeira Extensora", sets: "4 séries", reps: "15 + Drop-set", tech: "Drop-set" },
+                    { name: "Cadeira Flexora", sets: "4 séries", reps: "15", tech: "Normal" },
+                    { name: "Desenvolvimento com Halteres", sets: "4 séries", reps: "12", tech: "Normal" },
+                    { name: "Elevação Lateral", sets: "4 séries", reps: "15", tech: "Normal" },
+                    { name: "Face Pull", sets: "4 séries", reps: "15", tech: "Normal" }
+                ]
+            },
+            { 
+                title: "Peito e Bíceps",
+                focus: "Desenvolvimento superior e força",
+                routine: [
+                    { name: "Supino Reto com Halteres", sets: "4 séries", reps: "10 a 12", tech: "Normal" },
+                    { name: "Crucifixo Inclinado", sets: "4 séries", reps: "12", tech: "Normal" },
+                    { name: "Crossover na Polia", sets: "4 séries", reps: "15", tech: "Normal" },
+                    { name: "Rosca Direta Polia", sets: "4 séries", reps: "12", tech: "Normal" },
+                    { name: "Rosca Martelo 21", sets: "4 séries", reps: "21 reps", tech: "21" },
+                    { name: "Rosca Concentrada", sets: "3 séries", reps: "12", tech: "Normal" }
+                ]
+            },
+            { 
+                title: "Glúteos (Foco)",
+                focus: "Foco total na hipertrofia e desenho dos glúteos",
+                routine: [
+                    { name: "Aquecimento c/ Elástico", sets: "2 séries", reps: "20", tech: "Normal" },
+                    { name: "Elevação de Quadril", sets: "4 séries", reps: "15 (Segurar 2s)", tech: "Isometria" },
+                    { name: "Agachamento Sumô", sets: "4 séries", reps: "12 a 15", tech: "Normal" },
+                    { name: "Agachamento Búlgaro", sets: "4 séries", reps: "10 a 12 (cada perna)", tech: "Normal" },
+                    { name: "Glúteos 4 Apoios Coice", sets: "4 séries", reps: "15", tech: "Normal" },
+                    { name: "Glúteos Coice na Polia", sets: "4 séries", reps: "12", tech: "Drop-set" },
+                    { name: "Abdução de Quadril", sets: "4 séries", reps: "20", tech: "Normal" }
+                ]
+            },
+            { 
+                title: "Costas e Tríceps",
+                focus: "Costura em V e tríceps desenhado",
+                routine: [
+                    { name: "Puxada Aberta", sets: "4 séries", reps: "12", tech: "Normal" },
+                    { name: "Remada Máquina", sets: "4 séries", reps: "12 a 15", tech: "Normal" },
+                    { name: "Remada Curvada", sets: "4 séries", reps: "12", tech: "Normal" },
+                    { name: "Tríceps Polia Corda", sets: "4 séries", reps: "15", tech: "Normal" },
+                    { name: "Tríceps Testa", sets: "4 séries", reps: "12", tech: "Normal" },
+                    { name: "Tríceps Francês", sets: "3 séries", reps: "15", tech: "Drop-set" }
+                ]
+            },
+            { 
+                title: "Abdômen e Panturrilha",
+                focus: "Secar o core e finalizar a semana",
+                routine: [
+                    { name: "Abdominal Supra Solo", sets: "4 séries", reps: "20", tech: "Normal" },
+                    { name: "Abdominal Infra no Banco", sets: "4 séries", reps: "20", tech: "Normal" },
+                    { name: "Prancha Isométrica", sets: "4 séries", reps: "1 minuto", tech: "Isometria" },
+                    { name: "Abdominal Escalador", sets: "4 séries", reps: "30 seg", tech: "HIIT" },
+                    { name: "Panturrilha no Leg Press", sets: "5 séries", reps: "15", tech: "Normal" },
+                    { name: "Extensão de Panturrilha", sets: "5 séries", reps: "15", tech: "Normal" },
+                    { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
+                ]
+            }
+        ];
+
+        // Lógica de Dietas (Mês Completo com Receitas)
+        let dietPlans = [
+            {
+                title: "Semana 1 (Low Carb)",
+                meals: [
+                    { 
+                        time: "08:00 - Café da Manhã", 
+                        name: "Ovos Mexidos com Queijo", 
+                        details: "3 ovos inteiros e 1 fatia de queijo minas. Rico em proteína.",
+                        ingredients: "3 Ovos inteiros\n1 Fatia de queijo minas (ou muçarela)\nSal e pimenta a gosto\n1 fio de azeite",
+                        recipe: "Bata os ovos num prato com um garfo. Aqueça a frigideira com o fio de azeite. Despeje os ovos, adicione o queijo picado, tempere com sal e pimenta e mexa até chegar no ponto desejado."
+                    },
+                    { 
+                        time: "12:30 - Almoço", 
+                        name: "Frango Grelhado com Brócolis", 
+                        details: "150g de frango grelhado e muito brócolis cozido.",
+                        ingredients: "150g de peito de frango\n1 xícara de brócolis\nLimão, alho e sal para temperar\nSalada verde à vontade",
+                        recipe: "Tempere o frango com alho, sal e limão. Grelhe numa frigideira bem quente até dourar. Cozinhe o brócolis no vapor por 5 minutos para não perder os nutrientes. Sirva com a salada crua."
+                    },
+                    { 
+                        time: "16:00 - Lanche da Tarde", 
+                        name: "Iogurte e Castanhas", 
+                        details: "Lanche prático e fonte de gorduras boas.",
+                        ingredients: "1 Pote de iogurte natural desnatado (2 componentes)\n30g de mix de castanhas (pará, caju, amêndoas)",
+                        recipe: "Basta misturar as castanhas picadas no iogurte. Se precisar adoçar, use algumas gotas de adoçante stévia."
+                    },
+                    { 
+                        time: "19:30 - Jantar", 
+                        name: "Omelete de Forno Leve", 
+                        details: "Omelete de 3 claras com tomate e cebola.",
+                        ingredients: "3 Claras de ovo e 1 gema\n1/2 Tomate picado\n1/4 Cebola picada\nSalsinha e cebolinha",
+                        recipe: "Misture tudo num refratário pequeno, tempere a gosto e leve à AirFryer (160°C por 12 min) ou asse no forno até dourar. Fica parecendo uma tortinha saudável!"
+                    }
+                ]
+            },
+            {
+                title: "Semana 3 (Foco Saciedade)",
+                meals: [
+                    { 
+                        time: "08:00 - Café da Manhã", 
+                        name: "Mingau de Aveia Proteico", 
+                        details: "Fibras para segurar a fome o dia todo.",
+                        ingredients: "2 Colheres de aveia em flocos\n150ml de leite desnatado ou água\n1 scoop de Whey ou 2 claras de ovo",
+                        recipe: "Cozinhe a aveia com o leite em fogo baixo até engrossar. Desligue o fogo e misture o Whey rapidamente. Polvilhe canela por cima (termogênico natural)."
+                    },
+                    { 
+                        time: "12:30 - Almoço", 
+                        name: "Filé de Peixe com Purê de Batata Doce", 
+                        details: "Ômega 3 e carboidrato de baixo índice glicêmico.",
+                        ingredients: "150g de filé de tilápia ou pescada\n100g de batata doce cozida\nLimão e pimenta do reino",
+                        recipe: "Tempere o peixe com limão e pimenta e asse ou grelhe. Amasse a batata doce cozida com um fio de azeite e um pouco da água do cozimento para fazer o purê."
+                    },
+                    { 
+                        time: "16:00 - Lanche da Tarde", 
+                        name: "Panqueca Doce Rápida", 
+                        details: "Mata a vontade de doces sem estragar a dieta.",
+                        ingredients: "1 Banana pequena amassada\n1 Ovo\n1 Colher de aveia\nCanela",
+                        recipe: "Amasse a banana e misture com o ovo, aveia e canela. Asse na frigideira untada em fogo baixo de ambos os lados."
+                    },
+                    { 
+                        time: "19:30 - Jantar", 
+                        name: "Salada de Grão de Bico com Atum", 
+                        details: "Jantar fresco, proteico e rico em fibras.",
+                        ingredients: "3 Colheres de grão de bico cozido\n1 Lata de atum ao natural (escorrida)\nTomate cereja, pepino e cebola roxa\nAzeite e limão",
+                        recipe: "Misture todos os ingredientes numa tigela grande. Tempere com limão, azeite, sal e orégano. Refeição que não precisa ir ao fogo!"
+                    }
+                ]
+            },
+            {
+                title: "Semana 2 (Termogênica)",
+                meals: [
+                    { 
+                        time: "08:00 - Café da Manhã", 
+                        name: "Crepioca Fit de Frango", 
+                        details: "1 ovo + 1 colher de tapioca. Carboidrato para energia.",
+                        ingredients: "1 Ovo\n1 Colher de sopa de goma de tapioca\n2 colheres de sopa de frango desfiado temperado\nUma pitada de sal",
+                        recipe: "Misture bem o ovo com a tapioca e o sal. Despeje na frigideira quente. Quando soltar, vire, coloque o frango desfiado, dobre ao meio e deixe o queijo (opcional) derreter."
+                    },
+                    { 
+                        time: "12:30 - Almoço", 
+                        name: "Patinho Moído com Abóbora", 
+                        details: "120g de carne magra e 100g de abóbora cabotiá.",
+                        ingredients: "120g de patinho moído\n100g de abóbora cabotiá em cubos\nCebola, alho, páprica picante",
+                        recipe: "Refogue a carne moída com cebola e alho, adicione a páprica (ajuda a acelerar o metabolismo). Cozinhe a abóbora até ficar macia e sirva junto. Amasse a abóbora para virar um purê se preferir."
+                    },
+                    { 
+                        time: "16:00 - Lanche da Tarde", 
+                        name: "Vitamina de Frutas Vermelhas", 
+                        details: "Antioxidante e saciante.",
+                        ingredients: "1 Polpa de frutas vermelhas (ou morangos congelados)\n1 Medida de Whey Protein baunilha\n200ml de água fria",
+                        recipe: "Bata tudo no liquidificador até ficar bem cremoso. Beba logo em seguida."
+                    },
+                    { 
+                        time: "19:30 - Jantar", 
+                        name: "Sopa Detox de Legumes", 
+                        details: "Sopa nutritiva e de baixíssima caloria.",
+                        ingredients: "1/2 Chuchu, 1/2 cenoura, 1 abobrinha\n100g de frango desfiado\nTemperos naturais (orégano, cúrcuma)",
+                        recipe: "Cozinhe os legumes em água com um pouco de sal e cúrcuma. Bata no liquidificador para fazer um creme. Volte para a panela, adicione o frango desfiado e aqueça."
+                    }
+                ]
+            },
+            {
+                title: "Semana 4 (Jeque de Choque / Leve)",
+                meals: [
+                    { 
+                        time: "08:00 - Café da Manhã", 
+                        name: "Suco Verde + Ovos Cozidos", 
+                        details: "Limpa o organismo logo de manhã.",
+                        ingredients: "2 Ovos cozidos\n1 Folha de couve, 1 fatia de abacaxi, gengibre, água",
+                        recipe: "Bata a couve, abacaxi, um pedaço pequeno de gengibre e água no liquidificador. Coe se preferir e beba. Coma os dois ovos cozidos (temperados com um pouco de sal)."
+                    },
+                    { 
+                        time: "12:30 - Almoço", 
+                        name: "Estrogonofe Fit", 
+                        details: "150g de frango com creme de ricota.",
+                        ingredients: "150g de peito de frango em cubos\n2 colheres de creme de ricota light\nMolho de tomate pelado, cebola, alho",
+                        recipe: "Refogue o frango com alho e cebola. Adicione o molho de tomate natural e deixe ferver. Desligue o fogo e misture o creme de ricota para ficar cremoso. Coma com salada verde."
+                    },
+                    { 
+                        time: "16:00 - Lanche da Tarde", 
+                        name: "Maçã Assada com Canela", 
+                        details: "Sobremesa quente e reconfortante.",
+                        ingredients: "1 Maçã\nCanela em pó\n1 Fio de mel (opcional)",
+                        recipe: "Retire o miolo da maçã, polvilhe bastante canela e leve ao micro-ondas por 2 a 3 minutos ou na AirFryer. Fica como um doce!"
+                    },
+                    { 
+                        time: "19:30 - Jantar", 
+                        name: "Espaguete de Abobrinha à Bolonhesa", 
+                        details: "Engana o cérebro! Parece massa, mas é vegetal.",
+                        ingredients: "1 Abobrinha ralada em fios (formato espaguete)\n100g de carne moída pronta no molho de tomate",
+                        recipe: "Refogue rapidamente os fios de abobrinha em água fervente ou no vapor por apenas 2 minutos (para não amolecer demais). Sirva com o molho à bolonhesa quente por cima."
+                    }
+                ]
+            }
+        ];
+
+        // --- FUNÇÕES PRINCIPAIS ---
+
+        let currentViewedWorkoutIndex = 0;
+        let currentViewedDietIndex = 0;
+        let currentWeekCycle = 0; // Controla em qual das 4 semanas estamos
+
+        // --- FUNÇÕES DE ARMAZENAMENTO E MEMÓRIA ---
+        function getWeight(exerciseName) {
+            // Puxa o peso salvo na memória do celular do usuário
+            return localStorage.getItem(`peso_${exerciseName}`) || '';
+        }
+
+        function saveWeight(exerciseName, weight) {
+            // Salva o peso na memória do celular do usuário
+            localStorage.setItem(`peso_${exerciseName}`, weight);
+        }
+
+        function getCompletedWorkouts() {
+            // Verifica quais treinos foram feitos nesta semana específica
+            const currentWeek = getWeekNumber(new Date());
+            const data = localStorage.getItem(`treinos_concluidos_semana_${currentWeek}`);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function markWorkoutCompleted(index) {
+            // Pinta o treino como concluído na memória
+            const currentWeek = getWeekNumber(new Date());
+            let completed = getCompletedWorkouts();
+            if (!completed.includes(index)) {
+                completed.push(index);
+                localStorage.setItem(`treinos_concluidos_semana_${currentWeek}`, JSON.stringify(completed));
+            }
+        }
+
+        function initApp() {
+            // Inicializa os ícones do Lucide
+            lucide.createIcons();
+
+            // Configurar Data e Saudação
+            setupDateAndGreeting();
+
+            // Configurar Citação
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('motivational-quote').innerText = `"${randomQuote}"`;
+
+            // Lógica Inteligente de Semanas e Dias
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            
+            // Qual treino do dia (A, B, C, D, E)
+            const currentPhaseIndex = dayOfYear % 5; 
+            const currentWorkoutPhase = workoutSchedules[currentPhaseIndex];
+
+            // Qual Semana do Mês estamos (0 a 3) para mudar a técnica
+            currentWeekCycle = getWeekNumber(now) % 4;
+            
+            const weekTitles = [
+                "Semana 1: Clássico e Metabólico",
+                "Semana 2: Foco em Força (Carga Alta)",
+                "Semana 3: Choque e Exaustão (Drop-set)",
+                "Semana 4: Tensão Contínua (Isometria)"
+            ];
+
+            // Atualizar UI da Home
+            document.getElementById('week-phase-title').innerText = `${weekTitles[currentWeekCycle]} \nHoje: ${currentWorkoutPhase.title}`;
+
+            // Renderiza as abas e seleciona automaticamente o treino do dia
+            currentViewedWorkoutIndex = currentPhaseIndex;
+            renderWorkoutTabs();
+            selectWorkout(currentPhaseIndex);
+
+            // Gerar Glossário
+            generateTechniquesGlossary();
+
+            // Renderizar Abas de Dieta
+            renderDietTabs();
+            selectDiet(0);
+        }
+
+        // Função mágica que muda a técnica dependendo da semana
+        function applyWeeklyTechniques(routine, cycle) {
+            // Semana 1: O treino original exato como foi planejado
+            if (cycle === 0) return routine; 
+            
+            return routine.map(ex => {
+                // Não altera aquecimento, cardio ou prancha (para não ficar estranho)
+                if (ex.name.includes("Aquecimento") || ex.tech === "Cardio" || ex.name.includes("Esteira") || ex.name.includes("Prancha")) {
+                    return ex;
+                }
+                
+                // Clona o exercício para mudar os dados sem afetar o original
+                let newEx = { ...ex };
+                
+                if (cycle === 1) { // Semana 2: Força
+                    newEx.sets = "4 séries";
+                    newEx.reps = "8 a 10";
+                    newEx.tech = "Pirâmide";
+                } else if (cycle === 2) { // Semana 3: Choque / Falha
+                    newEx.sets = "3 séries + 1 Drop";
+                    newEx.reps = "Falha total";
+                    newEx.tech = "Drop-set";
+                } else if (cycle === 3) { // Semana 4: Tensão Contínua
+                    newEx.sets = "4 séries";
+                    newEx.reps = "12 (Segurar 3s)";
+                    newEx.tech = "Tensão Contínua";
+                }
+                return newEx;
+            });
+        }
+
+        // Obtém o número da semana do ano
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            return weekNo;
+        }
+
+        function setupDateAndGreeting() {
+            const dateStr = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+            document.getElementById('current-date').innerText = dateStr;
+
+            const hour = new Date().getHours();
+            let greeting = "Boa noite";
+            if (hour >= 5 && hour < 12) greeting = "Bom dia";
+            else if (hour >= 12 && hour < 18) greeting = "Boa tarde";
+            document.getElementById('greeting').innerText = `${greeting}, Guerreiro(a)!`;
+        }
+
+        let activeMainTab = 'home'; // Memória de qual aba principal o usuário estava
+
+        function switchTab(tabName) {
+            // Guarda a aba atual caso não seja o admin, para sabermos de onde o usuário veio
+            if (tabName !== 'admin') {
+                activeMainTab = tabName;
+            }
+
+            // Esconde todas
+            document.getElementById('tab-home').classList.add('hidden');
+            document.getElementById('tab-workouts').classList.add('hidden');
+            document.getElementById('tab-diets').classList.add('hidden');
+            document.getElementById('tab-admin').classList.add('hidden');
+            
+            // Reseta cores do nav
+            ['home', 'workouts', 'diets'].forEach(id => {
+                if(document.getElementById(`nav-${id}`)) {
+                    document.getElementById(`nav-${id}`).classList.remove('text-roxo-700');
+                    document.getElementById(`nav-${id}`).classList.add('text-slate-400');
+                }
+            });
+
+            // Mostra a selecionada
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            
+            if(document.getElementById(`nav-${tabName}`)) {
+                document.getElementById(`nav-${tabName}`).classList.remove('text-slate-400');
+                document.getElementById(`nav-${tabName}`).classList.add('text-roxo-700');
+            }
+            
+            if(tabName === 'admin') renderAdmin();
+            
+            window.scrollTo(0, 0);
+        }
+
+        function switchAdminTab(section) {
+            if(section === 'treinos') {
+                document.getElementById('admin-treinos-section').classList.remove('hidden');
+                document.getElementById('admin-dietas-section').classList.add('hidden');
+                
+                document.getElementById('admin-nav-treinos').classList.add('bg-white', 'text-roxo-700', 'shadow-sm');
+                document.getElementById('admin-nav-treinos').classList.remove('text-slate-500');
+                
+                document.getElementById('admin-nav-dietas').classList.remove('bg-white', 'text-roxo-700', 'shadow-sm');
+                document.getElementById('admin-nav-dietas').classList.add('text-slate-500');
+            } else {
+                document.getElementById('admin-dietas-section').classList.remove('hidden');
+                document.getElementById('admin-treinos-section').classList.add('hidden');
+                
+                document.getElementById('admin-nav-dietas').classList.add('bg-white', 'text-roxo-700', 'shadow-sm');
+                document.getElementById('admin-nav-dietas').classList.remove('text-slate-500');
+                
+                document.getElementById('admin-nav-treinos').classList.remove('bg-white', 'text-roxo-700', 'shadow-sm');
+                document.getElementById('admin-nav-treinos').classList.add('text-slate-500');
+            }
+        }
+
+        function renderWorkoutTabs() {
+            const tabsContainer = document.getElementById('workout-tabs');
+            tabsContainer.innerHTML = '';
+            
+            // Pega a lista de treinos que já foram feitos
+            const completedWorkouts = getCompletedWorkouts();
+
+            workoutSchedules.forEach((schedule, index) => {
+                const isActive = index === currentViewedWorkoutIndex;
+                const isCompleted = completedWorkouts.includes(index);
+                const tabTitle = schedule.title; 
+                
+                let bgClass = '';
+                let iconHtml = isCompleted ? '<i data-lucide="check-circle" class="w-4 h-4 mr-1 inline-block"></i>' : '';
+
+                // Lógica inteligente de cores para as abas
+                if (isActive && isCompleted) {
+                    bgClass = 'bg-green-700 text-white shadow-md border-green-700'; // Ativo e Já feito
+                } else if (isActive) {
+                    bgClass = 'bg-roxo-700 text-white shadow-md'; // Ativo e Não feito
+                } else if (isCompleted) {
+                    bgClass = 'bg-green-100 text-green-700 border border-green-200'; // Não ativo, mas Já feito
+                } else {
+                    bgClass = 'bg-white text-roxo-700 border border-purple-100 hover:bg-purple-50'; // Normal
+                }
+                
+                const btn = `
+                    <button onclick="selectWorkout(${index})" 
+                        class="whitespace-nowrap flex items-center px-3 py-1.5 rounded-xl font-bold text-xs transition-colors ${bgClass}">
+                        ${iconHtml}${tabTitle}
+                    </button>
+                `;
+                tabsContainer.insertAdjacentHTML('beforeend', btn);
+            });
+            lucide.createIcons(); // Recarrega os ícones de check
+        }
+
+        function selectWorkout(index) {
+            currentViewedWorkoutIndex = index;
+            renderWorkoutTabs(); // Atualiza a cor do botão ativo
+            
+            const schedule = workoutSchedules[index];
+            document.getElementById('workout-focus').innerText = `Foco: ${schedule.focus}`;
+            
+            // Aplica a modificação de técnica baseada na semana atual
+            const modifiedRoutine = applyWeeklyTechniques(schedule.routine, currentWeekCycle);
+            
+            generateWorkoutList(modifiedRoutine);
+        }
+
+        function generateWorkoutList(routine) {
+            const container = document.getElementById('exercise-list');
+            container.innerHTML = '';
+
+            routine.forEach((exercise, index) => {
+                // Puxa a explicação e a mídia (Foto/Vídeo) do banco Editável
+                const exerciseData = exercisesDb[exercise.name] || { 
+                    desc: "Mantenha a postura e a respiração controlada.", 
+                    media: "https://placehold.co/150x150/f3e8ff/a855f7?text=Foto+Aqui" 
+                };
+                
+                const instructions = exerciseData.desc;
+                const mediaUrl = exerciseData.media;
+                
+                // Lógica Inteligente para exibir Foto OU Vídeo
+                let mediaElementHTML = '';
+                if (mediaUrl.toLowerCase().endsWith('.mp4') || mediaUrl.toLowerCase().endsWith('.webm')) {
+                    mediaElementHTML = `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-16 h-16 rounded-xl object-cover mr-3 border border-purple-50 shadow-sm flex-shrink-0"></video>`;
+                } else {
+                    mediaElementHTML = `<img src="${mediaUrl}" alt="${exercise.name}" class="w-16 h-16 rounded-xl object-cover mr-3 border border-purple-50 shadow-sm flex-shrink-0">`;
+                }
+                
+                const html = `
+                    <div class="bg-white rounded-2xl shadow-sm border border-purple-100 overflow-hidden transition-all">
+                        <div class="flex items-center p-3">
+                            <label class="cursor-pointer flex-shrink-0 flex items-center justify-center mr-3">
+                                <input type="checkbox" class="hidden exercise-checkbox" id="chk-${index}">
+                                <!-- Checkbox visual -->
+                                <div class="w-6 h-6 rounded-full border-2 border-purple-200 flex items-center justify-center transition-colors">
+                                    <i data-lucide="check" class="w-4 h-4 text-white opacity-0 transition-opacity"></i>
+                                </div>
+                            </label>
+                            
+                            <!-- Imagem ou Vídeo do Exercício -->
+                            ${mediaElementHTML}
+                            
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-bold text-roxo-900 text-base leading-tight truncate">${exercise.name}</h4>
+                                <div class="flex flex-wrap gap-1 text-[10px] font-semibold mt-1">
+                                    <span class="bg-purple-100 text-roxo-700 px-2 py-1 rounded-md whitespace-nowrap">${exercise.sets}</span>
+                                    <span class="bg-slate-100 text-slate-700 px-2 py-1 rounded-md whitespace-nowrap">${exercise.reps}</span>
+                                    <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded-md whitespace-nowrap">${exercise.tech}</span>
+                                </div>
+                                <!-- Input de Carga Editável -->
+                                <div class="mt-2 flex items-center text-xs">
+                                    <span class="text-slate-500 font-semibold mr-1">Carga:</span>
+                                    <input type="number" onchange="saveWeight('${exercise.name}', this.value)" value="${getWeight(exercise.name)}" placeholder="0" class="w-12 border-b-2 border-purple-100 bg-transparent text-center text-roxo-900 font-bold focus:outline-none focus:border-roxo-500 transition-colors" />
+                                    <span class="text-slate-500 ml-1">kg</span>
+                                </div>
+                            </div>
+                            
+                            <button type="button" onclick="toggleDetails(${index}, event)" class="p-2 ml-1 text-slate-400 hover:text-roxo-500 flex-shrink-0">
+                                <i data-lucide="chevron-down" id="icon-${index}" class="w-5 h-5 transition-transform duration-300"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Detalhes Expansíveis -->
+                        <div id="details-${index}" class="hidden px-4 pb-4 border-t border-purple-50 bg-slate-50">
+                            <div class="mt-3 space-y-3">
+                                <div>
+                                    <h5 class="text-xs font-bold text-roxo-700 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                        <i data-lucide="info" class="w-3 h-3"></i> Como fazer
+                                    </h5>
+                                    <p class="text-sm text-slate-600">${instructions}</p>
+                                </div>
+                                <div class="bg-purple-100 p-3 rounded-xl border border-purple-200">
+                                    <h5 class="text-xs font-bold text-roxo-900 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                        <i data-lucide="zap" class="w-3 h-3 text-orange-500"></i> Técnica: ${exercise.tech}
+                                    </h5>
+                                    <p class="text-sm text-slate-700">${techniquesDb[exercise.tech]}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+            lucide.createIcons();
+        }
+
+        // --- FUNÇÕES DE DIETA ---
+        function renderDietTabs() {
+            const tabsContainer = document.getElementById('diet-tabs');
+            tabsContainer.innerHTML = '';
+            
+            dietPlans.forEach((plan, index) => {
+                const isActive = index === currentViewedDietIndex;
+                
+                // Reduzi o padding (px-3 py-1.5) e o tamanho do texto (text-xs) para caberem todos de forma bonita
+                const btn = `
+                    <button onclick="selectDiet(${index})" 
+                        class="whitespace-nowrap flex items-center px-3 py-1.5 rounded-xl font-bold text-xs transition-colors 
+                        ${isActive ? 'bg-green-600 text-white shadow-md' : 'bg-white text-green-700 border border-green-100 hover:bg-green-50'}">
+                        ${plan.title}
+                    </button>
+                `;
+                tabsContainer.insertAdjacentHTML('beforeend', btn);
+            });
+        }
+
+        function selectDiet(index) {
+            currentViewedDietIndex = index;
+            renderDietTabs(); 
+            
+            const plan = dietPlans[index];
+            const container = document.getElementById('diet-list');
+            container.innerHTML = '';
+
+            plan.meals.forEach((meal, mIndex) => {
+                // Formata os ingredientes para terem uma bolinha antes de cada linha
+                const ingredientsList = meal.ingredients ? meal.ingredients.split('\n').map(item => `<li>• ${item}</li>`).join('') : "<li>• Ingredientes não especificados.</li>";
+                const recipeText = meal.recipe || "Modo de preparo não especificado.";
+
+                const html = `
+                    <div class="relative cursor-pointer group" onclick="toggleDietDetails(${mIndex}, event)">
+                        <!-- Dot da linha do tempo -->
+                        <div class="absolute -left-[31px] top-4 w-4 h-4 bg-white border-4 border-green-500 rounded-full shadow-sm z-10 group-hover:scale-125 transition-transform"></div>
+                        
+                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-green-100 ml-2 hover:shadow-md transition">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-md inline-block">${meal.time}</span>
+                                <i data-lucide="chevron-down" id="diet-icon-${mIndex}" class="w-5 h-5 text-green-400 transition-transform duration-300"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">${meal.name}</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed">${meal.details}</p>
+                            
+                            <!-- Detalhes Expansíveis da Dieta -->
+                            <div id="diet-details-${mIndex}" class="hidden mt-4 pt-4 border-t border-green-50 animate-fade-in">
+                                <div class="mb-4">
+                                    <h5 class="text-xs font-bold text-green-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                        <i data-lucide="shopping-basket" class="w-4 h-4"></i> Ingredientes
+                                    </h5>
+                                    <ul class="text-sm text-slate-600 space-y-1 pl-1">
+                                        ${ingredientsList}
+                                    </ul>
+                                </div>
+                                <div class="bg-orange-50 p-3 rounded-xl border border-orange-100">
+                                    <h5 class="text-xs font-bold text-orange-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                        <i data-lucide="chef-hat" class="w-4 h-4"></i> Como Preparar
+                                    </h5>
+                                    <p class="text-sm text-slate-700 leading-relaxed">${recipeText}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+            lucide.createIcons();
+        }
+
+        function toggleDietDetails(mIndex, event) {
+            const details = document.getElementById(`diet-details-${mIndex}`);
+            const icon = document.getElementById(`diet-icon-${mIndex}`);
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                details.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        function toggleDetails(index, event) {
+            // Evita que o click no botão ative o checkbox
+            event.preventDefault(); 
+            event.stopPropagation();
+            
+            const details = document.getElementById(`details-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                details.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        function generateTechniquesGlossary() {
+            const container = document.getElementById('techniques-content');
+            for (const [name, desc] of Object.entries(techniquesDb)) {
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="border-b border-gray-100 pb-3">
+                        <h4 class="font-bold text-roxo-700 flex items-center gap-2">
+                            <i data-lucide="zap" class="w-4 h-4 text-orange-400"></i> ${name}
+                        </h4>
+                        <p class="text-sm text-slate-600 mt-1">${desc}</p>
+                    </div>
+                `);
+            }
+        }
+
+        function openTechniqueModal() {
+            document.getElementById('technique-modal').classList.remove('hidden');
+        }
+
+        function closeTechniqueModal() {
+            document.getElementById('technique-modal').classList.add('hidden');
+        }
+
+        function finishWorkout() {
+            // Verifica se marcou tudo (Gamificação)
+            const checkboxes = document.querySelectorAll('.exercise-checkbox');
+            let allChecked = true;
+            checkboxes.forEach(cb => { if(!cb.checked) allChecked = false; });
+
+            if (!allChecked) {
+                // Ao invés de alert, usa um visual amigável (porém simples aqui)
+                const conf = confirm("Você ainda não marcou todos os exercícios. Tem certeza que deseja finalizar?");
+                if(!conf) return;
+            }
+
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+            // Desmarca tudo para o próximo dia
+            document.querySelectorAll('.exercise-checkbox').forEach(cb => cb.checked = false);
+            
+            // Marca o treino atual como concluído de verdade!
+            markWorkoutCompleted(currentViewedWorkoutIndex);
+            
+            // Atualiza as abas de treino para ficarem verdes
+            renderWorkoutTabs();
+
+            // Volta para a tela inicial
+            switchTab('home');
+        }
+
+        // Inicia o app quando o DOM carregar
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        // --- FUNÇÕES DE ADMINISTRADOR ---
+        let editWIndex = -1;
+        let editEIndex = -1;
+        let editDIndex = -1;
+        let editMIndex = -1;
+
+        function renderAdmin() {
+            const container = document.getElementById('admin-list');
+            const dietContainer = document.getElementById('admin-diet-list');
+            
+            // Renderiza Treinos
+            container.innerHTML = '';
+            workoutSchedules.forEach((workout, wIndex) => {
+                let exHtml = workout.routine.map((ex, eIndex) => `
+                    <div class="flex justify-between items-center bg-slate-50 p-3 rounded-lg mb-2 border border-slate-100">
+                        <div class="min-w-0 flex-1">
+                            <span class="font-bold text-sm text-roxo-900 block truncate">${ex.name}</span>
+                            <span class="text-[10px] font-semibold bg-purple-100 text-roxo-700 px-1.5 py-0.5 rounded">${ex.sets} | ${ex.reps}</span>
+                        </div>
+                        <div class="flex gap-2 ml-2 flex-shrink-0">
+                            <button onclick="openEditEx(${wIndex}, ${eIndex})" class="bg-blue-100 text-blue-600 p-1.5 rounded-lg"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                            <button onclick="deleteEx(${wIndex}, ${eIndex})" class="bg-red-100 text-red-600 p-1.5 rounded-lg"><i data-lucide="trash" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm mb-4 border border-purple-100 relative overflow-hidden">
+                        <div class="absolute w-1.5 h-full bg-roxo-500 left-0 top-0"></div>
+                        <h3 class="font-bold text-lg text-roxo-900 mb-3 pl-2">${workout.title}</h3>
+                        <div class="mb-3 pl-2">${exHtml}</div>
+                        <button onclick="openEditEx(${wIndex}, -1)" class="w-full text-sm bg-purple-50 hover:bg-purple-100 text-roxo-700 py-3 rounded-xl font-bold transition">
+                            + Adicionar Exercício
+                        </button>
+                    </div>
+                `;
+            });
+
+            // Renderiza Dietas
+            dietContainer.innerHTML = '';
+            dietPlans.forEach((plan, dIndex) => {
+                let mealHtml = plan.meals.map((meal, mIndex) => `
+                    <div class="flex justify-between items-center bg-slate-50 p-3 rounded-lg mb-2 border border-slate-100">
+                        <div class="min-w-0 flex-1">
+                            <span class="text-[10px] font-bold text-green-600 block">${meal.time}</span>
+                            <span class="font-bold text-sm text-slate-800 block truncate">${meal.name}</span>
+                        </div>
+                        <div class="flex gap-2 ml-2 flex-shrink-0">
+                            <button onclick="openEditDiet(${dIndex}, ${mIndex})" class="bg-blue-100 text-blue-600 p-1.5 rounded-lg"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                            <button onclick="deleteDietMeal(${dIndex}, ${mIndex})" class="bg-red-100 text-red-600 p-1.5 rounded-lg"><i data-lucide="trash" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+
+                dietContainer.innerHTML += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm mb-4 border border-green-100 relative overflow-hidden">
+                        <div class="absolute w-1.5 h-full bg-green-500 left-0 top-0"></div>
+                        <h3 class="font-bold text-lg text-green-800 mb-3 pl-2">${plan.title}</h3>
+                        <div class="mb-3 pl-2">${mealHtml}</div>
+                        <button onclick="openEditDiet(${dIndex}, -1)" class="w-full text-sm bg-green-50 hover:bg-green-100 text-green-700 py-3 rounded-xl font-bold transition">
+                            + Adicionar Refeição
+                        </button>
+                    </div>
+                `;
+            });
+
+            lucide.createIcons();
+        }
+
+        function openEditEx(wIndex, eIndex) {
+            editWIndex = wIndex;
+            editEIndex = eIndex;
+            const modal = document.getElementById('admin-modal');
+            
+            if(eIndex === -1) {
+                // Novo exercício
+                document.getElementById('admin-name').value = '';
+                document.getElementById('admin-sets').value = '4 séries';
+                document.getElementById('admin-reps').value = '15';
+                document.getElementById('admin-tech').value = 'Normal';
+                document.getElementById('admin-media').value = 'https://placehold.co/150x150/f3e8ff/a855f7?text=Sua+Foto';
+                document.getElementById('admin-desc').value = '';
+            } else {
+                // Editar existente
+                const ex = workoutSchedules[wIndex].routine[eIndex];
+                const dbEx = exercisesDb[ex.name] || { media: '', desc: '' };
+                document.getElementById('admin-name').value = ex.name;
+                document.getElementById('admin-sets').value = ex.sets;
+                document.getElementById('admin-reps').value = ex.reps;
+                document.getElementById('admin-tech').value = ex.tech;
+                document.getElementById('admin-media').value = dbEx.media || '';
+                document.getElementById('admin-desc').value = dbEx.desc || '';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function saveAdminEx() {
+            const name = document.getElementById('admin-name').value || "Sem Nome";
+            const sets = document.getElementById('admin-sets').value;
+            const reps = document.getElementById('admin-reps').value;
+            const tech = document.getElementById('admin-tech').value;
+            const media = document.getElementById('admin-media').value;
+            const desc = document.getElementById('admin-desc').value;
+
+            // Salva as mídias e instruções no banco principal de exercícios
+            exercisesDb[name] = { desc, media };
+
+            // Salva na lista da rotina do treino específico
+            if(editEIndex === -1) {
+                workoutSchedules[editWIndex].routine.push({ name, sets, reps, tech });
+            } else {
+                workoutSchedules[editWIndex].routine[editEIndex] = { name, sets, reps, tech };
+            }
+            
+            closeAdminModal();
+            renderAdmin(); // Atualiza tela de admin
+            
+            // Atualiza também a tela de treino se estiver ativa
+            selectWorkout(currentViewedWorkoutIndex);
+        }
+
+        function deleteEx(wIndex, eIndex) {
+            if(confirm('Tem certeza que deseja excluir este exercício?')) {
+                workoutSchedules[wIndex].routine.splice(eIndex, 1);
+                renderAdmin();
+                selectWorkout(currentViewedWorkoutIndex);
+            }
+        }
+
+        // --- ADMIN DE DIETAS ---
+        function openEditDiet(dIndex, mIndex) {
+            editDIndex = dIndex;
+            editMIndex = mIndex;
+            const modal = document.getElementById('admin-diet-modal');
+            
+            if(mIndex === -1) {
+                // Nova refeição
+                document.getElementById('admin-diet-time').value = '00:00 - Nova Refeição';
+                document.getElementById('admin-diet-name').value = '';
+                document.getElementById('admin-diet-details').value = '';
+                document.getElementById('admin-diet-ingredients').value = '';
+                document.getElementById('admin-diet-recipe').value = '';
+            } else {
+                // Editar existente
+                const meal = dietPlans[dIndex].meals[mIndex];
+                document.getElementById('admin-diet-time').value = meal.time || '';
+                document.getElementById('admin-diet-name').value = meal.name || '';
+                document.getElementById('admin-diet-details').value = meal.details || '';
+                document.getElementById('admin-diet-ingredients').value = meal.ingredients || '';
+                document.getElementById('admin-diet-recipe').value = meal.recipe || '';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeAdminDietModal() {
+            document.getElementById('admin-diet-modal').classList.add('hidden');
+        }
+
+        function saveAdminDietMeal() {
+            const time = document.getElementById('admin-diet-time').value || "00:00";
+            const name = document.getElementById('admin-diet-name').value || "Refeição";
+            const details = document.getElementById('admin-diet-details').value || "";
+            const ingredients = document.getElementById('admin-diet-ingredients').value || "";
+            const recipe = document.getElementById('admin-diet-recipe').value || "";
+
+            if(editMIndex === -1) {
+                dietPlans[editDIndex].meals.push({ time, name, details, ingredients, recipe });
+            } else {
+                dietPlans[editDIndex].meals[editMIndex] = { time, name, details, ingredients, recipe };
+            }
+            
+            closeAdminDietModal();
+            renderAdmin(); // Atualiza tela de admin
+            selectDiet(currentViewedDietIndex); // Atualiza tela de dietas
+        }
+
+        function deleteDietMeal(dIndex, mIndex) {
+            if(confirm('Tem certeza que deseja excluir esta refeição?')) {
+                dietPlans[dIndex].meals.splice(mIndex, 1);
+                renderAdmin();
+                selectDiet(currentViewedDietIndex);
+            }
+        }
+
+        // --- FUNÇÕES DE SEGURANÇA ---
+        function openPasswordModal() {
+            document.getElementById('password-modal').classList.remove('hidden');
+            document.getElementById('admin-pass-input').value = '';
+            document.getElementById('password-error').classList.add('hidden');
+        }
+
+        function closePasswordModal() {
+            document.getElementById('password-modal').classList.add('hidden');
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('admin-pass-input').value;
+            if (pass === '1234') { // Senha padrão configurada
+                closePasswordModal();
+                
+                // Inteligência: Se o usuário veio da aba de Dieta, abre o painel direto na Dieta!
+                if (activeMainTab === 'diets') {
+                    switchAdminTab('dietas');
+                } else {
+                    switchAdminTab('treinos');
+                }
+                
+                switchTab('admin');
+            } else {
+                document.getElementById('password-error').classList.remove('hidden');
+            }
+        }
+
+    </script>
 </body>
 </html>
