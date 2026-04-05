@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mfp-cache-v2';
+const CACHE_NAME = 'mfp-cache-v3';
 const urlsToCache = [
   './',
   './index.html',
