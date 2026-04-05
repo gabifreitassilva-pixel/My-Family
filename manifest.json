@@ -1,0 +1,59 @@
+{
+  "name": "My Family Personal",
+  "short_name": "MFP",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3e8ff",
+  "theme_color": "#7e22ce",
+  "icons": [
+    {
+      "src": "https://placehold.co/192x192/7e22ce/ffffff?text=MFP",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://placehold.co/512x512/7e22ce/ffffff?text=MFP",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
+**Ficheiro 2:** Crie um ficheiro chamado `sw.js` (é o seu Service Worker para a app abrir super rápido e gravar ficheiros offline) e coloque lá dentro este código:
+
+```javascript
+const CACHE_NAME = 'mfp-cache-v1';
+const urlsToCache = [
+  './',
+  './index.html',
+  './manifest.json'
+];
+
+// Instala o Service Worker e guarda os ficheiros em cache
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        return cache.addAll(urlsToCache);
+      })
+  );
+});
+
+// Interceta os pedidos à rede e usa a cache se estiver offline
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // Se encontrar na cache, retorna; se não, vai à internet (network)
+        return response || fetch(event.request);
+      })
+  );
+});
+
+**Resumo para o seu GitHub ficar perfeito:**
+Tem de ter 3 ficheiros na raiz (todos escritos com letras minúsculas):
+1. `index.html` (com o código da App toda atualizada)
+2. `manifest.json`
+3. `sw.js`
+
+Depois disto o botão de "Download" na barra roxa de cima e o funcionamento nativo no telemóvel vão trabalhar na perfeição!
