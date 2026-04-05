@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>My Family Personal</title>
     
-    <!-- Configurações para Aplicativo Nativo (PWA) -->
+    <!-- Meta Tags PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#7e22ce">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=MFP&background=7e22ce&color=fff&size=192">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/10419/10419404.png">
     <link rel="manifest" href="./manifest.json">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,612 +27,494 @@
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilos globais e utilitários */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Checkbox de treino concluído */
         .exercise-checkbox:checked + div { background-color: #7e22ce; border-color: #7e22ce; }
         .exercise-checkbox:checked + div svg { opacity: 1; }
         
-        /* Ajuste de altura dinâmica para telemóveis */
-        body { height: 100dvh; background-color: #f8fafc; }
+        body { height: 100dvh; background-color: #f3e8ff; }
         
-        /* Visualizador de imagens (Lightbox) */
-        #image-viewer-modal img, #image-viewer-modal video { 
+        #image-viewer-modal img { 
             max-width: 95%; 
             max-height: 80vh; 
-            border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5);
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
+
+        .diet-dot { position: absolute; left: -31px; top: 24px; width: 16px; height: 16px; background: white; border: 4px solid #22c55e; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     </style>
 </head>
-<body class="font-sans flex justify-center overflow-hidden">
+<body class="font-sans flex justify-center overflow-hidden text-slate-800">
 
-    <div class="w-full max-w-md bg-lilas h-full flex flex-col relative shadow-2xl overflow-hidden">
+    <div class="w-full max-w-md bg-lilas h-full flex flex-col relative shadow-2xl overflow-hidden border-x border-purple-200">
         
-        <!-- Cabeçalho Principal -->
-        <header class="bg-roxo-700 text-white p-5 pt-10 rounded-b-[2.5rem] shadow-lg z-10">
-            <div class="flex justify-between items-center mb-4">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white p-1 rounded-full shadow-inner">
-                        <img src="https://ui-avatars.com/api/?name=MFP&background=7e22ce&color=fff&size=128" alt="Logo" class="w-10 h-10 rounded-full">
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-black tracking-tight leading-none">My Family Personal</h1>
-                        <p class="text-purple-200 text-[10px] font-bold uppercase tracking-widest mt-1 opacity-80">Emagrecimento & Saúde</p>
-                    </div>
+        <!-- Cabeçalho Roxo Sólido -->
+        <header class="bg-roxo-700 text-white p-6 pt-12 rounded-b-[3rem] shadow-lg z-10 relative">
+            <div class="flex justify-between items-center mb-1">
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight leading-none italic">My Family Personal</h1>
+                    <p class="text-purple-200 text-xs mt-1 opacity-90 font-medium">Foco no Emagrecimento</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="installApp()" class="bg-white/10 p-2 rounded-full backdrop-blur-md text-green-300 hover:bg-white/20 transition">
-                        <i data-lucide="download" class="w-5 h-5"></i>
-                    </button>
-                    <button onclick="openPasswordModal()" class="bg-white/10 p-2 rounded-full backdrop-blur-md hover:bg-white/20 transition">
+                <div class="flex items-center gap-3">
+                    <button onclick="openPasswordModal()" class="bg-white/20 p-2.5 rounded-full backdrop-blur-md hover:bg-white/30 transition">
                         <i data-lucide="settings" class="text-white w-5 h-5"></i>
                     </button>
+                    <div class="bg-white/20 p-2.5 rounded-full backdrop-blur-md">
+                        <i data-lucide="flame" class="text-orange-400 w-6 h-6"></i>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- Área de Conteúdo com Scroll -->
-        <main id="main-content" class="flex-1 overflow-y-auto no-scrollbar pb-28 p-5">
+        <!-- Área de Conteúdo -->
+        <main id="main-content" class="flex-1 overflow-y-auto no-scrollbar pb-32 p-5">
             
-            <!-- ABA INICIAL (HOME) -->
+            <!-- ABA HOME -->
             <section id="tab-home" class="fade-in space-y-6">
                 <div class="text-center mt-2">
-                    <p id="current-date" class="text-roxo-700 font-bold uppercase text-[10px] tracking-tighter mb-1"></p>
-                    <h2 id="greeting" class="text-3xl font-black text-roxo-900 tracking-tight">Olá, Guerreiro!</h2>
+                    <p id="current-date" class="text-roxo-700 font-black uppercase text-[10px] tracking-widest mb-1"></p>
+                    <h2 id="greeting" class="text-4xl font-black text-roxo-900 tracking-tighter italic text-center">Olá, Gaby!</h2>
                 </div>
 
-                <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-purple-100 relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 opacity-5"><i data-lucide="quote" class="w-32 h-32 text-roxo-900"></i></div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <i data-lucide="sparkles" class="text-roxo-500 w-5 h-5"></i>
-                        <h3 class="font-bold text-roxo-900 text-sm uppercase">Motivação</h3>
+                <!-- Perfil Peso -->
+                <div class="bg-white rounded-3xl p-5 shadow-sm border border-purple-100 flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-purple-100 p-3 rounded-2xl text-roxo-700"><i data-lucide="scale" class="w-5 h-5"></i></div>
+                            <div>
+                                <span class="text-[10px] font-black text-slate-400 uppercase block leading-none">Registar Peso</span>
+                                <span class="text-sm font-black text-roxo-900 uppercase">PESO ATUAL</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="user-weight" step="0.1" placeholder="00" class="w-16 bg-slate-50 border-2 border-slate-100 rounded-xl p-2 text-center font-black text-roxo-700 outline-none focus:border-roxo-500">
+                            <span class="text-xs font-bold text-slate-400 uppercase">kg</span>
+                        </div>
                     </div>
-                    <p id="motivational-quote" class="text-lg text-slate-700 font-medium italic relative z-10 leading-snug">"O suor de hoje é a vitória de amanhã."</p>
+                    <button onclick="addWeightEntry()" class="w-full bg-roxo-700 text-white py-3 rounded-xl font-black uppercase text-[10px] tracking-widest shadow-md active:scale-95 transition-all">Registar no Histórico</button>
                 </div>
 
-                <div class="bg-roxo-700 rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden">
-                    <h3 class="font-bold text-xl mb-1">Fase da Semana</h3>
-                    <p id="week-phase-title" class="text-purple-200 mb-5 text-sm whitespace-pre-line leading-relaxed font-medium">...</p>
-                    <button onclick="switchTab('workouts')" class="bg-white text-roxo-900 w-full py-4 rounded-2xl font-black shadow-lg transform active:scale-95 transition-transform">
-                        VAMOS TREINAR AGORA
+                <!-- Calculadoras -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-[2rem] p-5 text-white shadow-lg relative overflow-hidden">
+                        <i data-lucide="droplet" class="absolute -right-2 -bottom-2 w-16 h-16 opacity-20"></i>
+                        <h4 class="font-black text-[10px] uppercase tracking-widest opacity-80 mb-1">Água</h4>
+                        <p id="calc-water" class="text-2xl font-black italic">-- L</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-[2rem] p-5 text-white shadow-lg relative overflow-hidden">
+                        <i data-lucide="zap" class="absolute -right-2 -bottom-2 w-16 h-16 opacity-20"></i>
+                        <h4 class="font-black text-[10px] uppercase tracking-widest opacity-80 mb-1">Creatina</h4>
+                        <p id="calc-creatine" class="text-2xl font-black italic">-- g</p>
+                    </div>
+                </div>
+
+                <div class="bg-roxo-700 rounded-[2.5rem] p-7 text-white shadow-xl relative overflow-hidden border-b-8 border-roxo-900">
+                    <h3 class="font-black text-xl uppercase italic mb-1">Status Semanal</h3>
+                    <p id="week-phase-title" class="text-purple-200 mb-6 text-sm font-bold uppercase tracking-tight whitespace-pre-line leading-relaxed italic">...</p>
+                    <button onclick="switchTab('workouts')" class="bg-white text-roxo-900 w-full py-4 rounded-2xl font-black shadow-lg transform active:scale-95 transition-all uppercase tracking-widest text-xs">
+                        TREINAR AGORA
                     </button>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white rounded-3xl p-4 shadow-sm border border-purple-100 flex flex-col items-center text-center">
-                        <div class="bg-blue-50 p-3 rounded-full text-blue-500 mb-2"><i data-lucide="droplet" class="w-6 h-6"></i></div>
-                        <h4 class="font-bold text-roxo-900 text-xs uppercase">Água</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Meta: 35ml/kg</p>
+                <!-- HISTÓRICO DE PESO -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between px-1">
+                        <h3 class="text-lg font-black text-roxo-900 uppercase italic tracking-tighter">Histórico de Evolução</h3>
+                        <i data-lucide="trending-down" class="text-green-500 w-5 h-5"></i>
                     </div>
-                    <div class="bg-white rounded-3xl p-4 shadow-sm border border-purple-100 flex flex-col items-center text-center">
-                        <div class="bg-orange-50 p-3 rounded-full text-orange-500 mb-2"><i data-lucide="pill" class="w-6 h-6"></i></div>
-                        <h4 class="font-bold text-roxo-900 text-xs uppercase">Creatina</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Dose diária OK?</p>
+                    <div id="weight-history-list" class="space-y-3">
+                        <!-- Itens do histórico injetados aqui -->
                     </div>
                 </div>
             </section>
 
-            <!-- ABA DE TREINOS -->
+            <!-- ABA TREINOS -->
             <section id="tab-workouts" class="hidden fade-in space-y-5">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-black text-roxo-900 tracking-tight">Treinos</h2>
-                    <button onclick="openTechniqueModal()" class="bg-purple-100 text-roxo-700 p-2 rounded-xl">
-                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="text-2xl font-black text-roxo-900 tracking-tighter uppercase italic">Treinos</h2>
+                    <button onclick="openTechniqueModal()" class="text-roxo-500 text-[10px] font-black uppercase flex items-center gap-1 border-b-2 border-roxo-100 pb-0.5 tracking-widest">
+                        <i data-lucide="book-open" class="w-4 h-4 text-roxo-400"></i> Dicionário
                     </button>
                 </div>
-                <div id="workout-tabs" class="flex flex-wrap gap-2"></div>
-                <div class="bg-roxo-50 p-3 rounded-2xl border border-purple-100">
-                    <p id="workout-focus" class="text-roxo-700 text-[10px] font-black uppercase tracking-widest text-center">...</p>
+                <div id="workout-tabs" class="flex flex-wrap gap-2 mb-2"></div>
+                <div class="bg-white/40 p-2 rounded-xl text-center italic">
+                    <p id="workout-focus" class="text-roxo-700 text-[11px] font-black uppercase tracking-tight">...</p>
                 </div>
                 <div id="exercise-list" class="space-y-4"></div>
-                <div class="pt-4 pb-10">
-                    <button onclick="finishWorkout()" class="bg-roxo-700 text-white w-full py-5 rounded-3xl font-black shadow-xl flex items-center justify-center gap-3">
+                <div class="pt-6 pb-12 text-center">
+                    <button onclick="finishWorkout()" class="bg-roxo-700 text-white w-full py-5 rounded-[2rem] font-black shadow-xl flex items-center justify-center gap-3 uppercase tracking-[0.2em] active:scale-95 transition-all">
                         <i data-lucide="check-circle" class="w-6 h-6"></i> FINALIZAR TREINO
                     </button>
                 </div>
             </section>
 
-            <!-- ABA DE DIETAS -->
-            <section id="tab-diets" class="hidden fade-in space-y-5 pb-10">
-                <h2 class="text-2xl font-black text-roxo-900 tracking-tight">Dieta & Nutrição</h2>
-                
-                <div id="diet-week-tabs" class="flex flex-wrap gap-2"></div>
-                
-                <div class="bg-white rounded-2xl p-1 shadow-inner flex overflow-x-auto no-scrollbar gap-1 border border-purple-100">
-                    <div id="diet-day-tabs" class="flex gap-1"></div>
+            <!-- ABA DIETAS -->
+            <section id="tab-diets" class="hidden fade-in space-y-6 pb-10">
+                <h2 class="text-2xl font-black text-roxo-900 italic tracking-tighter px-1 uppercase">Plano Alimentar</h2>
+                <div class="bg-white rounded-3xl p-1 shadow-inner border-2 border-purple-100">
+                    <div id="diet-week-tabs" class="grid grid-cols-4 gap-1 p-1"></div>
                 </div>
-
-                <div id="diet-list" class="space-y-6 relative border-l-2 border-purple-200 ml-4 pl-6 mt-4"></div>
+                <div class="bg-white rounded-3xl p-1 shadow-inner border-2 border-purple-100">
+                    <div id="diet-day-tabs" class="grid grid-cols-7 gap-0.5 p-1"></div>
+                </div>
+                <div id="diet-list" class="space-y-6 relative border-l-2 border-green-200 ml-4 pl-6 mt-4"></div>
             </section>
 
             <!-- ABA ADMIN -->
             <section id="tab-admin" class="hidden fade-in space-y-6 pb-20">
-                <div class="flex items-center gap-3">
-                    <div class="bg-roxo-100 p-3 rounded-2xl text-roxo-700"><i data-lucide="shield-check"></i></div>
-                    <div>
-                        <h2 class="text-xl font-black text-roxo-900">Painel de Edição</h2>
-                        <p class="text-[10px] text-slate-500 font-bold uppercase">Modo Desenvolvedor</p>
-                    </div>
-                </div>
-                
+                <h2 class="text-2xl font-black text-roxo-900 italic tracking-tighter uppercase">Painel Admin</h2>
                 <div class="flex bg-slate-200/50 p-1 rounded-2xl">
-                    <button id="admin-nav-treinos" onclick="switchAdminTab('treinos')" class="flex-1 py-3 text-xs font-black rounded-xl bg-white text-roxo-700 shadow-sm transition-all uppercase">Treinos</button>
-                    <button id="admin-nav-dietas" onclick="switchAdminTab('dietas')" class="flex-1 py-3 text-xs font-black rounded-xl text-slate-500 transition-all uppercase">Dietas</button>
+                    <button id="admin-nav-treinos" onclick="switchAdminTab('treinos')" class="flex-1 py-3 text-[10px] font-black rounded-xl bg-white text-roxo-700 shadow-sm uppercase transition-all">Treinos</button>
+                    <button id="admin-nav-dietas" onclick="switchAdminTab('dietas')" class="flex-1 py-3 text-[10px] font-black rounded-xl text-slate-500 uppercase transition-all">Dietas</button>
                 </div>
-
-                <!-- ADMIN TREINOS -->
-                <div id="admin-treinos-section" class="space-y-4">
-                    <div id="admin-list" class="space-y-4"></div>
-                </div>
-
-                <!-- ADMIN DIETAS -->
+                <div id="admin-treinos-section" class="space-y-4"><div id="admin-list" class="space-y-4"></div></div>
                 <div id="admin-dietas-section" class="space-y-4 hidden">
-                    <div class="bg-white p-5 rounded-3xl border-2 border-purple-50 shadow-sm space-y-4">
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Semana</label>
-                                <select id="admin-select-week" onchange="renderAdminDiet()" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl text-sm font-bold focus:border-roxo-500 outline-none"></select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Dia</label>
-                                <select id="admin-select-day" onchange="renderAdminDiet()" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl text-sm font-bold focus:border-roxo-500 outline-none">
-                                    <option value="0">Segunda</option><option value="1">Terça</option><option value="2">Quarta</option>
-                                    <option value="3">Quinta</option><option value="4">Sexta</option><option value="5">Sábado</option><option value="6">Domingo</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="bg-white p-5 rounded-3xl border-2 border-purple-100 shadow-sm grid grid-cols-2 gap-3">
+                        <select id="admin-select-week" onchange="renderAdminDiet()" class="bg-slate-50 p-3 rounded-xl font-bold text-[10px] uppercase outline-none"></select>
+                        <select id="admin-select-day" onchange="renderAdminDiet()" class="bg-slate-50 p-3 rounded-xl font-bold text-[10px] uppercase outline-none">
+                            <option value="0">Segunda</option><option value="1">Terça</option><option value="2">Quarta</option>
+                            <option value="3">Quinta</option><option value="4">Sexta</option><option value="5">Sábado</option><option value="6">Domingo</option>
+                        </select>
                     </div>
                     <div id="admin-diet-list" class="space-y-3"></div>
                 </div>
             </section>
         </main>
 
-        <!-- Barra de Navegação Inferior -->
-        <nav class="absolute bottom-0 w-full bg-white/90 backdrop-blur-lg border-t border-purple-100 flex justify-around p-3 pb-8 z-20 shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+        <!-- Navegação Inferior -->
+        <nav class="absolute bottom-0 w-full bg-white/95 backdrop-blur-xl border-t border-purple-100 flex justify-around p-3 pb-10 z-20 shadow-2xl">
             <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-roxo-700 transition-all scale-110">
-                <i data-lucide="home" class="w-6 h-6 mb-1"></i><span class="text-[9px] font-black uppercase">Início</span>
+                <i data-lucide="home" class="w-6 h-6 mb-1"></i><span class="text-[9px] font-black uppercase italic">Início</span>
             </button>
             <button onclick="switchTab('workouts')" id="nav-workouts" class="flex flex-col items-center text-slate-400 transition-all">
-                <i data-lucide="dumbbell" class="w-6 h-6 mb-1"></i><span class="text-[9px] font-black uppercase tracking-widest">Treinos</span>
+                <i data-lucide="dumbbell" class="w-6 h-6 mb-1"></i><span class="text-[9px] font-black uppercase italic">Treinos</span>
             </button>
             <button onclick="switchTab('diets')" id="nav-diets" class="flex flex-col items-center text-slate-400 transition-all">
-                <i data-lucide="utensils" class="w-6 h-6 mb-1"></i><span class="text-[9px] font-black uppercase tracking-widest">Dieta</span>
+                <i data-lucide="utensils" class="w-6 h-6 mb-1"></i><span class="text-[9px] font-black uppercase italic">Dieta</span>
             </button>
         </nav>
 
-        <!-- VISUALIZADOR DE IMAGEM -->
+        <!-- Modais -->
         <div id="image-viewer-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex flex-col items-center justify-center p-4 fade-in" onclick="closeImageViewer()">
-            <button class="absolute top-10 right-6 bg-white/10 p-3 rounded-full text-white backdrop-blur-xl border border-white/20"><i data-lucide="x" class="w-8 h-8"></i></button>
+            <button class="absolute top-12 right-6 bg-white/10 p-3 rounded-full text-white backdrop-blur-xl border border-white/20"><i data-lucide="x" class="w-8 h-8"></i></button>
             <div id="viewer-container" class="flex items-center justify-center w-full h-full"></div>
-            <p class="text-white/40 text-xs font-bold uppercase tracking-widest mt-4">Toque para fechar</p>
         </div>
 
-        <!-- MODAL SENHA -->
         <div id="password-modal" class="fixed inset-0 bg-black/80 z-[110] hidden flex items-center justify-center fade-in">
-            <div class="bg-white rounded-[2.5rem] p-8 max-w-xs w-[90%] text-center shadow-2xl border-4 border-roxo-100">
-                <div class="w-20 h-20 bg-roxo-50 rounded-full flex items-center justify-center mx-auto mb-6 text-roxo-700 shadow-inner">
-                    <i data-lucide="lock" class="w-10 h-10"></i>
-                </div>
-                <h3 class="text-2xl font-black text-roxo-900 mb-2">Acesso Restrito</h3>
-                <p class="text-xs text-slate-400 font-bold uppercase mb-6">Área do Administrador</p>
-                <input type="password" id="admin-pass-input" placeholder="••••" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl text-center mb-6 font-black text-2xl tracking-[1em] outline-none focus:border-roxo-500 transition-all">
+            <div class="bg-white rounded-[3rem] p-8 max-w-xs w-[92%] text-center border-4 border-roxo-100 shadow-2xl">
+                <h3 class="text-2xl font-black text-roxo-900 mb-6 uppercase tracking-tighter italic">Gaby Admin</h3>
+                <input type="password" id="admin-pass-input" placeholder="••••" class="w-full bg-slate-50 border-2 border-slate-100 p-5 rounded-2xl text-center mb-6 font-black text-3xl tracking-[0.5em] outline-none">
                 <div class="flex gap-3">
-                    <button onclick="closePasswordModal()" class="flex-1 bg-slate-100 text-slate-500 py-4 rounded-2xl font-black uppercase text-xs">Sair</button>
-                    <button onclick="checkPassword()" class="flex-1 bg-roxo-700 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-lg">Entrar</button>
+                    <button onclick="closePasswordModal()" class="flex-1 bg-slate-100 text-slate-500 py-4 rounded-2xl font-black uppercase text-[10px]">Voltar</button>
+                    <button onclick="checkPassword()" class="flex-1 bg-roxo-700 text-white py-4 rounded-2xl font-black uppercase text-[10px] shadow-lg">Entrar</button>
                 </div>
-                <p id="password-error" class="text-red-500 text-[10px] font-black uppercase mt-4 hidden">Senha Incorreta</p>
             </div>
         </div>
 
-        <!-- MODAL EDITAR TREINO -->
         <div id="admin-modal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center fade-in">
-            <div class="bg-white rounded-[2.5rem] p-6 max-w-md w-[92%] max-h-[85vh] overflow-y-auto shadow-2xl border border-purple-50">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-black text-roxo-900 uppercase tracking-tight">Editar Exercício</h3>
-                    <button onclick="closeAdminModal()" class="bg-slate-100 p-2 rounded-full text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button>
-                </div>
+            <div class="bg-white rounded-[2.5rem] p-6 max-w-md w-[92%] max-h-[85vh] overflow-y-auto shadow-2xl">
+                <h3 class="text-xl font-black text-roxo-900 uppercase italic mb-6">Editar Exercício</h3>
                 <div class="space-y-4">
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Nome do Exercício</label>
-                        <input id="admin-name" type="text" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold focus:border-roxo-500 outline-none">
+                    <input id="admin-name" type="text" placeholder="Nome" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold">
+                    <input id="admin-sets" type="text" placeholder="Séries" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold">
+                    <input id="admin-reps" type="text" placeholder="Reps" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold">
+                    <input id="admin-tech" type="text" placeholder="Técnica" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold">
+                    <div class="flex gap-2">
+                        <input id="admin-media" type="text" placeholder="Código Print" class="flex-1 bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-mono text-[9px] outline-none">
+                        <label class="bg-roxo-700 text-white p-3 rounded-xl cursor-pointer shadow-md"><i data-lucide="camera"></i><input type="file" class="hidden" onchange="handleFileUpload(event, 'admin-media')"></label>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Séries</label>
-                            <input id="admin-sets" type="text" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold outline-none">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Repetições</label>
-                            <input id="admin-reps" type="text" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold outline-none">
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Técnica Avançada</label>
-                        <input id="admin-tech" type="text" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-bold outline-none">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Imagem/Vídeo (Print)</label>
-                        <div class="flex gap-2">
-                            <input id="admin-media" type="text" placeholder="Código ou Link" class="flex-1 bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-mono text-[9px] outline-none">
-                            <label class="bg-roxo-700 text-white p-3 rounded-xl cursor-pointer hover:bg-roxo-900 shadow-md transition-colors">
-                                <i data-lucide="camera" class="w-6 h-6"></i>
-                                <input type="file" id="admin-file" accept="image/*,video/*" class="hidden" onchange="handleFileUpload(event, 'admin-media')">
-                            </label>
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Instruções de Execução</label>
-                        <textarea id="admin-desc" rows="3" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-medium text-sm outline-none focus:border-roxo-500"></textarea>
-                    </div>
-                    <button onclick="saveAdminEx()" class="bg-roxo-700 text-white w-full py-5 rounded-3xl font-black shadow-xl uppercase tracking-widest mt-2 hover:bg-roxo-900 active:scale-95 transition-all">Salvar Alterações</button>
+                    <textarea id="admin-desc" rows="3" placeholder="Instruções..." class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-medium outline-none italic"></textarea>
+                    <button onclick="saveAdminEx()" class="bg-roxo-700 text-white w-full py-5 rounded-3xl font-black shadow-xl uppercase mt-2 transform active:scale-95 transition-all">Salvar</button>
+                    <button onclick="closeAdminModal()" class="w-full py-3 text-slate-400 font-bold uppercase text-[10px]">Fechar</button>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL EDITAR DIETA -->
         <div id="admin-diet-modal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center fade-in">
             <div class="bg-white rounded-[2.5rem] p-6 max-w-md w-[92%] max-h-[85vh] overflow-y-auto shadow-2xl">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-black text-roxo-900 uppercase">Editar Refeição</h3>
-                    <button onclick="closeAdminDietModal()" class="bg-slate-100 p-2 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-                </div>
+                <h3 class="text-xl font-black text-roxo-900 uppercase italic mb-6">Editar Refeição</h3>
                 <div class="space-y-4">
-                    <input id="admin-diet-time" type="text" placeholder="Horário (ex: 08:00)" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl font-bold outline-none">
-                    <input id="admin-diet-name" type="text" placeholder="Nome do Prato" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl font-bold outline-none">
-                    <textarea id="admin-diet-details" rows="2" placeholder="Resumo rápido" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none"></textarea>
-                    <textarea id="admin-diet-ingredients" rows="3" placeholder="Ingredientes (um por linha)" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none"></textarea>
-                    <textarea id="admin-diet-recipe" rows="3" placeholder="Modo de Preparo" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl outline-none"></textarea>
+                    <input id="admin-diet-time" type="text" placeholder="Hora" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl font-bold italic">
+                    <input id="admin-diet-name" type="text" placeholder="Nome" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl font-bold italic">
+                    <textarea id="admin-diet-ingredients" rows="3" placeholder="Ingredientes" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl font-medium italic"></textarea>
+                    <textarea id="admin-diet-recipe" rows="3" placeholder="Preparo..." class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl font-medium italic"></textarea>
                     <div class="flex gap-2">
-                        <input id="admin-diet-media" type="text" placeholder="Print da Receita" class="flex-1 bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-mono text-[9px] outline-none">
+                        <input id="admin-diet-media" type="text" placeholder="Foto Print" class="flex-1 bg-slate-50 border-2 border-slate-100 p-3 rounded-xl font-mono text-[9px] outline-none">
                         <label class="bg-green-600 text-white p-3 rounded-xl cursor-pointer shadow-md"><i data-lucide="camera"></i><input type="file" class="hidden" onchange="handleFileUpload(event, 'admin-diet-media')"></label>
                     </div>
-                    <button onclick="saveAdminDietMeal()" class="bg-green-600 text-white w-full py-5 rounded-3xl font-black shadow-xl uppercase mt-2">Salvar Receita</button>
+                    <button onclick="saveAdminDietMeal()" class="bg-green-600 text-white w-full py-5 rounded-3xl font-black shadow-xl uppercase mt-2">Gravar</button>
                 </div>
-            </div>
-        </div>
-
-        <!-- MODAL SUCESSO -->
-        <div id="success-modal" class="fixed inset-0 bg-black/80 z-[120] hidden flex items-center justify-center fade-in">
-            <div class="bg-white rounded-[3rem] p-10 max-w-xs w-[90%] text-center shadow-2xl scale-100 border-b-8 border-green-500">
-                <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
-                    <i data-lucide="trophy" class="w-12 h-12"></i>
-                </div>
-                <h3 class="text-3xl font-black text-roxo-900 mb-3 tracking-tighter">TREINO PAGO!</h3>
-                <p class="text-slate-500 text-sm font-medium leading-relaxed mb-8">Orgulho do seu foco hoje. O corpo dos sonhos está mais próximo!</p>
-                <button onclick="closeSuccessModal()" class="bg-roxo-700 text-white w-full py-5 rounded-[2rem] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-transform">Continuar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- BASE DE DADOS E ESTADOS ---
-        const daysOfWeek = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
-        const quotes = [
-            "Não pare quando estiver cansado, pare quando terminar.",
-            "O corpo alcança o que a mente acredita.",
-            "Um treino de 1 hora é apenas 4% do seu dia.",
-            "Foco no Projeto Gracyanne!",
-            "Disciplina é a ponte entre metas e realizações."
-        ];
-
+        // --- DADOS E REFERÊNCIAS ---
+        const daysOfWeek = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"];
+        const quotes = ["O suor de hoje é o seu sorriso de amanhã, Gaby!", "Foco total no Projeto Gracyanne!", "Disciplina vence o talento!", "Não pare até se orgulhar!"];
+        
         let exercisesDb = {
-            "Agachamento Livre": { desc: "Pés na largura dos ombros, desça o quadril mantendo as costas retas e peito aberto.", media: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400" },
-            "Esteira HIIT": { desc: "1 min corrida rápida (80%) + 1 min caminhada lenta (40%). Repetir.", media: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=400" }
+            "Agachamento Livre": { desc: "Pés na largura dos ombros, desça o quadril mantendo as costas retas e o peito estufado.", media: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400" },
+            "Leg Press 45": { desc: "Empurre a plataforma com os pés, não trave os joelhos no topo. Controle a descida.", media: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400" },
+            "Esteira HIIT": { desc: "1 min corrida rápida (80% esforço) + 1 min caminhada lenta. Repetir por 20 min.", media: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=400" }
         };
 
         let workoutSchedules = [
-            { title: "Perna e Ombro", focus: "Membros Inferiores & Deltóides", routine: [{ name: "Agachamento Livre", sets: "4", reps: "15", tech: "Normal" }, { name: "Esteira HIIT", sets: "1", reps: "20 min", tech: "HIIT" }] },
-            { title: "Peito e Bíceps", focus: "Peitoral & Braços", routine: [{ name: "Esteira HIIT", sets: "1", reps: "20 min", tech: "HIIT" }] },
-            { title: "Glúteos", focus: "Foco Total em Glúteos", routine: [{ name: "Esteira HIIT", sets: "1", reps: "20 min", tech: "HIIT" }] },
-            { title: "Costas e Tríceps", focus: "Dorsais & Tríceps", routine: [{ name: "Esteira HIIT", sets: "1", reps: "20 min", tech: "HIIT" }] },
-            { title: "Abdômen e Panturrilha", focus: "Core & Inferiores Isolados", routine: [{ name: "Esteira HIIT", sets: "1", reps: "20 min", tech: "HIIT" }] }
+            { title: "Perna e Ombro", focus: "Volume e construção de pernas e ombros largos", routine: [
+                { name: "Agachamento Livre", sets: "3 séries + 1 Drop", reps: "Falha total", tech: "Drop-set" },
+                { name: "Leg Press 45", sets: "3 séries + 1 Drop", reps: "Falha total", tech: "Drop-set" },
+                { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
+            ]},
+            { title: "Peito e Bíceps", focus: "Desenvolvimento superior e força", routine: [
+                { name: "Rosca Martelo 21", sets: "3 séries + 1 Drop", reps: "Falha total", tech: "Drop-set" },
+                { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
+            ]},
+            { title: "Glúteos (Foco)", focus: "Foco total na hipertrofia e desenho dos glúteos", routine: [
+                { name: "Elevação de Quadril", sets: "3 séries + 1 Drop", reps: "Falha total", tech: "Drop-set" },
+                { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
+            ]},
+            { title: "Costas e Tríceps", focus: "Costura em V e tríceps desenhado", routine: [
+                { name: "Puxada Aberta", sets: "3 séries + 1 Drop", reps: "Falha total", tech: "Drop-set" },
+                { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
+            ]},
+            { title: "Abdômen e Panturrilha", focus: "Secar o core e finalizar a semana", routine: [
+                { name: "Panturrilha Leg Press", sets: "3 séries + 1 Drop", reps: "Falha total", tech: "Drop-set" },
+                { name: "Esteira HIIT", sets: "1 série", reps: "30 min", tech: "HIIT" }
+            ]}
         ];
 
         let dietPlans = Array.from({length: 4}, (_, wk) => ({
-            title: `Semana ${wk + 1}`,
-            days: Array.from({length: 7}, (_, dy) => ({
-                dayName: daysOfWeek[dy],
-                meals: [{ time: "08:00", name: "Refeição Padrão", details: "Adicione sua dieta", ingredients: "", recipe: "", media: "" }]
+            title: `SEMANA ${wk + 1}`,
+            days: daysOfWeek.map((d, i) => ({
+                dayName: d,
+                meals: [
+                    { time: "08:30", name: `Café da Manhã (${d})`, ingredients: "Proteína + Fibras", recipe: "Fácil preparo.", media: "" },
+                    { time: "13:00", name: `Almoço (${d})`, ingredients: "Proteína + Vegetais", recipe: "Grelhar/Vapor.", media: "" }
+                ]
             }))
         }));
 
-        let currentWkIdx = 0;
-        let currentDietWkIdx = 0;
-        let currentDietDayIdx = 0;
-        let activeMainTab = 'home';
+        let currentWkIdx = 0, currentDietWkIdx = 0, currentDietDayIdx = 0, activeMainTab = 'home';
 
-        // --- INICIALIZAÇÃO ---
-        function initApp() {
-            lucide.createIcons();
+        // --- HISTÓRICO DE PESO ---
+        function getWeightHistory() {
+            const history = localStorage.getItem('gaby_weight_history');
+            return history ? JSON.parse(history) : [];
+        }
+
+        function addWeightEntry() {
+            const weightInput = document.getElementById('user-weight');
+            const weight = parseFloat(weightInput.value);
+            if (!weight || weight <= 0) return;
+
+            const history = getWeightHistory();
             const now = new Date();
-            document.getElementById('current-date').innerText = now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-            
-            const start = new Date(now.getFullYear(), 0, 0);
-            const dayOfYear = Math.floor((now - start) / 86400000);
-            const cycleWk = (Math.ceil(dayOfYear / 7) % 4) + 1;
-            
-            document.getElementById('week-phase-title').innerText = `SEMANA ${cycleWk} DO CICLO\nHoje: ${workoutSchedules[dayOfYear % 5].title}`;
-            document.getElementById('motivational-quote').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+            const entry = {
+                id: Date.now(),
+                date: now.toLocaleDateString('pt-BR'),
+                value: weight
+            };
 
-            renderWorkoutTabs();
-            selectWorkout(dayOfYear % 5);
-            renderDietWeeks();
-            selectDietWeek(0);
+            history.unshift(entry); // Adiciona no início da lista
+            localStorage.setItem('gaby_weight_history', JSON.stringify(history));
+            updateCalculations(weight);
+            renderWeightHistory();
+        }
 
-            // Registro do Service Worker com verificação de segurança para o ambiente de testes
-            if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-                navigator.serviceWorker.register('sw.js')
-                    .then(() => console.log('Service Worker ativo!'))
-                    .catch(e => console.warn('Aviso: SW não carregado no preview.'));
+        function deleteWeightEntry(id) {
+            let history = getWeightHistory();
+            history = history.filter(item => item.id !== id);
+            localStorage.setItem('gaby_weight_history', JSON.stringify(history));
+            renderWeightHistory();
+        }
+
+        function editWeightEntry(id) {
+            const history = getWeightHistory();
+            const entry = history.find(item => item.id === id);
+            const newValue = prompt("Digite o novo peso (kg):", entry.value);
+            
+            if (newValue !== null && !isNaN(parseFloat(newValue))) {
+                entry.value = parseFloat(newValue);
+                localStorage.setItem('gaby_weight_history', JSON.stringify(history));
+                renderWeightHistory();
+                if (id === history[0].id) updateCalculations(entry.value);
             }
         }
 
-        // --- NAVEGAÇÃO PRINCIPAL ---
-        function switchTab(tab) {
-            if (tab !== 'admin') activeMainTab = tab;
-            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
-            const target = document.getElementById(`tab-${tab}`);
-            if(target) target.classList.remove('hidden');
+        function renderWeightHistory() {
+            const history = getWeightHistory();
+            const list = document.getElementById('weight-history-list');
+            if (!list) return;
+
+            list.innerHTML = history.length ? history.map(item => `
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-purple-50 flex items-center justify-between fade-in">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-green-50 p-2 rounded-xl text-green-600"><i data-lucide="check" class="w-4 h-4"></i></div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase leading-none">${item.date}</p>
+                            <p class="text-sm font-black text-roxo-900">${item.value} kg</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editWeightEntry(${item.id})" class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                        <button onclick="deleteWeightEntry(${item.id})" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            `).join('') : '<p class="text-center text-[10px] font-bold text-slate-400 p-4 uppercase italic">Nenhum registo ainda.</p>';
+            lucide.createIcons();
+        }
+
+        // --- LÓGICA GERAL ---
+        function safeUpdate(id, text) { const el = document.getElementById(id); if(el) el.innerText = text; }
+
+        function initApp() {
+            lucide.createIcons();
+            const now = new Date();
+            safeUpdate('current-date', now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }));
             
+            const history = getWeightHistory();
+            if(history.length > 0) {
+                const lastWeight = history[0].value;
+                const wInput = document.getElementById('user-weight');
+                if(wInput) wInput.value = lastWeight;
+                updateCalculations(lastWeight);
+            }
+
+            const start = new Date(now.getFullYear(), 0, 0);
+            const cycleWk = (Math.ceil(Math.floor((now - start) / 864e5) / 7) % 4) + 1;
+            const workoutIdx = Math.floor((now-start)/864e5)%5;
+            
+            safeUpdate('week-phase-title', `Semana ${cycleWk} do Ciclo Mensal\nHoje: ${workoutSchedules[workoutIdx].title}`);
+            safeUpdate('motivational-quote', quotes[Math.floor(Math.random()*quotes.length)]);
+
+            renderWorkoutTabs();
+            selectWorkout(0);
+            renderDietWeeks();
+            selectDietWeek(0);
+            renderWeightHistory();
+        }
+
+        function updateCalculations(w) {
+            safeUpdate('calc-water', `${((w * 35) / 1000).toFixed(1)} L`);
+            safeUpdate('calc-creatine', `${(w * 0.07).toFixed(1)} g`);
+        }
+
+        function switchTab(t) {
+            activeMainTab = t;
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+            const target = document.getElementById(`tab-${t}`);
+            if(target) target.classList.remove('hidden');
             ['home', 'workouts', 'diets'].forEach(id => {
                 const btn = document.getElementById(`nav-${id}`);
                 if(btn) {
-                    btn.classList.toggle('text-roxo-700', id === tab);
-                    btn.classList.toggle('scale-110', id === tab);
-                    btn.classList.toggle('text-slate-400', id !== tab);
+                    btn.classList.toggle('text-roxo-700', id === t);
+                    btn.classList.toggle('scale-110', id === t);
+                    btn.classList.toggle('text-slate-400', id !== t);
                 }
             });
-            if(tab === 'admin') renderAdmin();
+            if(t === 'admin') renderAdmin();
             window.scrollTo(0,0);
         }
 
-        // --- LÓGICA DE TREINOS ---
         function renderWorkoutTabs() {
-            const completed = JSON.parse(localStorage.getItem('done_wk_' + getWeekNumber()) || "[]");
-            document.getElementById('workout-tabs').innerHTML = workoutSchedules.map((s, i) => {
-                const isDone = completed.includes(i);
-                return `
-                <button onclick="selectWorkout(${i})" class="px-4 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest border-2 transition-all flex items-center gap-1 ${i === currentWkIdx ? 'bg-roxo-700 text-white border-roxo-700 shadow-lg' : isDone ? 'bg-green-50 text-green-600 border-green-200' : 'bg-white text-roxo-900 border-purple-50 hover:bg-purple-50'}">
-                    ${isDone ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''} ${s.title}
-                </button>`;
-            }).join('');
-            lucide.createIcons();
+            const container = document.getElementById('workout-tabs');
+            if(!container) return;
+            container.innerHTML = workoutSchedules.map((s, i) => `<button onclick="selectWorkout(${i})" class="px-4 py-2 rounded-2xl font-black text-[9px] uppercase border-2 transition-all ${i === currentWkIdx ? 'bg-roxo-700 text-white border-roxo-700 shadow-lg scale-105' : 'bg-white text-roxo-900 border-purple-50'}">${s.title}</button>`).join('');
         }
 
         function selectWorkout(i) {
             currentWkIdx = i; renderWorkoutTabs();
-            document.getElementById('workout-focus').innerText = workoutSchedules[i].focus;
+            safeUpdate('workout-focus', `Foco: ${workoutSchedules[i].focus}`);
             const list = document.getElementById('exercise-list');
+            if(!list) return;
             list.innerHTML = workoutSchedules[i].routine.map((ex, idx) => {
-                const data = exercisesDb[ex.name] || { desc: "Sem instruções.", media: "https://placehold.co/100" };
-                const isVideo = data.media.includes('video') || data.media.endsWith('.mp4');
-                const mediaTag = isVideo ? `<video src="${data.media}" muted loop playsinline class="w-16 h-16 rounded-2xl object-cover shadow-sm"></video>` : `<img src="${data.media}" class="w-16 h-16 rounded-2xl object-cover shadow-sm">`;
-                
+                const data = exercisesDb[ex.name] || { desc: "Foco total.", media: "https://placehold.co/100?text=EX" };
                 return `
-                <div class="bg-white rounded-[2rem] shadow-sm border border-purple-50 overflow-hidden active:bg-slate-50 transition-colors">
-                    <div class="flex items-center p-3">
-                        <label class="mr-3 cursor-pointer"><input type="checkbox" class="hidden exercise-checkbox"><div class="w-7 h-7 rounded-full border-2 border-purple-100 flex items-center justify-center transition-all"><i data-lucide="check" class="w-4 h-4 text-white opacity-0"></i></div></label>
-                        <div class="flex-shrink-0 cursor-pointer border-2 border-purple-100 rounded-2xl" onclick="openImageViewer('${data.media}')">${mediaTag}</div>
-                        <div class="flex-1 min-w-0 px-3" onclick="toggleEx(${idx})">
-                            <h4 class="font-black text-roxo-900 text-sm leading-tight truncate">${ex.name}</h4>
-                            <div class="flex gap-1 text-[8px] mt-1 font-black uppercase">
-                                <span class="bg-purple-100 text-roxo-700 px-1.5 py-0.5 rounded-lg">${ex.sets}x</span>
-                                <span class="bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-lg">${ex.reps}</span>
-                                <span class="bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-lg">${ex.tech}</span>
-                            </div>
+                <div class="bg-white rounded-3xl shadow-sm border border-purple-100 overflow-hidden fade-in">
+                    <div class="flex items-center p-4">
+                        <label class="mr-4 cursor-pointer flex-shrink-0"><input type="checkbox" class="hidden exercise-checkbox"><div class="w-8 h-8 rounded-full border-2 border-purple-100 flex items-center justify-center transition-all bg-slate-50"><i data-lucide="check" class="w-5 h-5 text-white opacity-0"></i></div></label>
+                        <div class="w-16 h-16 bg-purple-50 rounded-2xl flex-shrink-0 cursor-pointer border border-purple-100 overflow-hidden shadow-inner" onclick="openImageViewer('${data.media}')"><img src="${data.media}" class="w-full h-full object-cover"></div>
+                        <div class="flex-1 min-w-0 px-4" onclick="toggleEx(${idx})">
+                            <h4 class="font-black text-roxo-900 text-sm italic uppercase truncate tracking-tighter leading-tight">${ex.name}</h4>
+                            <div class="flex flex-wrap gap-1 mt-1 font-black uppercase text-[8px] italic"><span class="bg-purple-100 text-roxo-700 px-2 py-0.5 rounded-lg">${ex.sets}</span><span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded-lg">${ex.reps}</span><span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-lg">${ex.tech}</span></div>
                         </div>
-                        <i data-lucide="chevron-down" id="icon-${idx}" class="text-slate-200 w-5 h-5 transition-transform"></i>
+                        <i data-lucide="chevron-down" id="icon-${idx}" class="text-slate-300 w-5 h-5 transition-transform"></i>
                     </div>
-                    <div id="ex-desc-${idx}" class="hidden px-5 pb-5 border-t border-purple-50">
-                        <p class="text-[11px] text-slate-600 mt-4 leading-relaxed font-medium">${data.desc}</p>
-                    </div>
+                    <div id="ex-desc-${idx}" class="hidden p-6 pt-2 border-t border-purple-50 bg-slate-50/50 italic"><p class="text-[11px] text-slate-600 font-bold uppercase leading-relaxed">${data.desc}</p></div>
                 </div>`;
             }).join('');
             lucide.createIcons();
         }
 
-        function toggleEx(i) { 
-            const el = document.getElementById(`ex-desc-${i}`);
-            const ic = document.getElementById(`icon-${i}`);
-            el.classList.toggle('hidden');
-            ic.classList.toggle('rotate-180');
-        }
+        function toggleEx(i) { const d = document.getElementById(`ex-desc-${i}`); const icon = document.getElementById(`icon-${i}`); if(d) d.classList.toggle('hidden'); if(icon) icon.classList.toggle('rotate-180'); }
 
-        // --- LÓGICA DE DIETAS ---
         function renderDietWeeks() {
-            document.getElementById('diet-week-tabs').innerHTML = dietPlans.map((p, i) => `
-                <button onclick="selectDietWeek(${i})" class="px-4 py-2 rounded-2xl font-black text-[10px] uppercase border-2 tracking-widest transition-all ${i === currentDietWkIdx ? 'bg-green-600 text-white border-green-600 shadow-lg' : 'bg-white text-green-700 border-green-50'}">${p.title}</button>
-            `).join('');
+            const container = document.getElementById('diet-week-tabs');
+            if(!container) return;
+            container.innerHTML = dietPlans.map((p, i) => `<button onclick="selectDietWeek(${i})" class="font-black text-[9px] uppercase border-2 transition-all rounded-xl py-2 ${i === currentDietWkIdx ? 'bg-roxo-700 text-white border-roxo-700 shadow-md' : 'bg-white text-roxo-700 border-purple-50'}">${p.title}</button>`).join('');
         }
-        function selectDietWeek(i) {
-            currentDietWkIdx = i; renderDietWeeks();
-            renderDietDays();
-            selectDietDay(0);
-        }
+        function selectDietWeek(i) { currentDietWkIdx = i; renderDietWeeks(); renderDietDays(); selectDietDay(0); }
+        
         function renderDietDays() {
-            document.getElementById('diet-day-tabs').innerHTML = daysOfWeek.map((d, i) => `
-                <button onclick="selectDietDay(${i})" class="whitespace-nowrap px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all ${i === currentDietDayIdx ? 'bg-roxo-700 text-white shadow-md' : 'text-slate-400 hover:bg-purple-50'}">${d.substring(0,3)}</button>
-            `).join('');
+            const container = document.getElementById('diet-day-tabs');
+            if(!container) return;
+            container.innerHTML = daysOfWeek.map((d, i) => `<button onclick="selectDietDay(${i})" class="py-2.5 font-black text-[8px] uppercase tracking-tighter transition-all rounded-xl border border-transparent ${i === currentDietDayIdx ? 'bg-roxo-700 text-white shadow-lg' : 'text-slate-400 hover:bg-purple-50'}">${d}</button>`).join('');
         }
+        
         function selectDietDay(i) {
             currentDietDayIdx = i; renderDietDays();
             const list = document.getElementById('diet-list');
-            const meals = dietPlans[currentDietWkIdx].days[i].meals;
-            list.innerHTML = meals.length ? meals.map((m, mi) => `
-                <div class="relative bg-white rounded-[2rem] p-5 shadow-sm border border-green-50 ml-2" onclick="toggleDiet(${mi})">
-                    <div class="absolute -left-[31px] top-6 w-4 h-4 bg-white border-4 border-green-500 rounded-full shadow-md"></div>
+            if(!list) return;
+            list.innerHTML = dietPlans[currentDietWkIdx].days[i].meals.map((m, mi) => `
+                <div class="relative bg-white rounded-[2rem] p-5 shadow-sm border border-green-50 ml-2 overflow-hidden" onclick="toggleDiet(${mi})">
+                    <div class="diet-dot"></div>
                     <div class="flex justify-between items-start">
                         <div class="min-w-0 pr-2">
-                            <span class="text-[8px] font-black text-green-600 uppercase tracking-widest">${m.time}</span>
-                            <h4 class="font-black text-slate-800 text-lg leading-tight truncate">${m.name}</h4>
-                        </div>
-                        ${m.media ? `<img src="${m.media}" class="w-12 h-12 rounded-2xl object-cover shadow-sm border border-white" onclick="event.stopPropagation(); openImageViewer('${m.media}')">` : ''}
-                    </div>
-                    <p class="text-xs text-slate-400 mt-1 font-medium leading-relaxed">${m.details}</p>
-                    <div id="diet-info-${mi}" class="hidden mt-4 pt-4 border-t border-purple-50 space-y-3 animate-fade-in">
-                        <div class="space-y-1">
-                            <p class="text-[9px] font-black text-roxo-700 uppercase tracking-widest">Ingredientes</p>
-                            <p class="text-xs text-slate-600 whitespace-pre-line leading-relaxed font-medium">${m.ingredients || 'Não definido.'}</p>
-                        </div>
-                        <div class="space-y-1">
-                            <p class="text-[9px] font-black text-roxo-700 uppercase tracking-widest">Modo de Preparo</p>
-                            <p class="text-xs text-slate-700 leading-relaxed font-bold">${m.recipe || 'Não definido.'}</p>
+                            <span class="text-[8px] font-black text-green-600 uppercase tracking-widest block mb-0.5">${m.time}</span>
+                            <h4 class="font-black text-slate-800 text-lg uppercase italic truncate tracking-tighter leading-tight">${m.name}</h4>
                         </div>
                     </div>
-                </div>
-            `).join('') : '<p class="text-slate-400 text-xs italic text-center py-10 font-bold uppercase tracking-widest">Nada planeado para hoje.</p>';
+                    <div id="diet-info-${mi}" class="hidden mt-4 pt-4 border-t border-purple-50 space-y-4 fade-in italic">
+                        <div><p class="text-[9px] font-black text-roxo-700 uppercase mb-1 italic tracking-widest">Ingredientes</p><p class="text-xs text-slate-600 font-bold italic uppercase tracking-tighter">${m.ingredients}</p></div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 font-black text-[11px] text-slate-700 italic">${m.recipe}</div>
+                    </div>
+                </div>`).join('');
         }
-        function toggleDiet(i) { document.getElementById(`diet-info-${i}`).classList.toggle('hidden'); }
+        function toggleDiet(i) { const el = document.getElementById(`diet-info-${i}`); if(el) el.classList.toggle('hidden'); }
 
-        // --- LÓGICA ADMIN ---
-        function checkPassword() {
-            if(document.getElementById('admin-pass-input').value === '1234') {
-                closePasswordModal(); switchTab('admin');
-                document.getElementById('admin-select-week').innerHTML = dietPlans.map((p, i) => `<option value="${i}">${p.title}</option>`).join('');
-                document.getElementById('password-error').classList.add('hidden');
-            } else {
-                document.getElementById('password-error').classList.remove('hidden');
-            }
+        // --- ADMIN ---
+        function renderAdmin() {
+            document.getElementById('admin-list').innerHTML = workoutSchedules.map((w, wi) => `
+                <div class="bg-white p-5 rounded-3xl border-2 border-slate-100 mb-4 shadow-sm">
+                    <h3 class="font-black text-roxo-900 mb-3 uppercase italic">${w.title}</h3>
+                    <div class="space-y-2">${w.routine.map((ex, ei) => `<div class="flex justify-between items-center py-2 border-b"><span class="font-bold text-xs uppercase">${ex.name}</span><button onclick="openEditEx(${wi},${ei})" class="text-blue-500 font-black text-[10px] uppercase">Editar</button></div>`).join('')}</div>
+                    <button onclick="openEditEx(${wi}, -1)" class="w-full mt-4 bg-purple-50 text-roxo-700 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest">+ Adicionar</button>
+                </div>`).join('');
+            renderAdminDiet();
+            lucide.createIcons();
         }
+
         function renderAdminDiet() {
             const wk = document.getElementById('admin-select-week').value;
             const dy = document.getElementById('admin-select-day').value;
-            const list = document.getElementById('admin-diet-list');
-            const meals = dietPlans[wk].days[dy].meals;
-            list.innerHTML = meals.map((m, i) => `
-                <div class="flex justify-between items-center bg-white p-4 rounded-2xl border-2 border-slate-50 shadow-sm">
-                    <div class="min-w-0 pr-2">
-                        <span class="text-[8px] font-black text-green-600 block">${m.time}</span>
-                        <span class="font-black text-sm text-roxo-900 block truncate">${m.name}</span>
-                    </div>
-                    <div class="flex gap-2"><button onclick="openEditDiet(${wk},${dy},${i})" class="bg-blue-50 text-blue-600 p-2 rounded-xl"><i data-lucide="edit-3" class="w-4 h-4"></i></button></div>
-                </div>
-            `).join('') + `<button onclick="openEditDiet(${wk},${dy},-1)" class="w-full py-4 bg-green-50 text-green-700 font-black rounded-2xl text-[10px] uppercase tracking-widest">+ Nova Refeição</button>`;
+            document.getElementById('admin-diet-list').innerHTML = dietPlans[wk].days[dy].meals.map((m, i) => `
+                <div class="flex justify-between items-center bg-white p-4 rounded-2xl border mb-2"><span class="text-[10px] font-black uppercase italic">${m.time} - ${m.name}</span><button onclick="openEditDiet(${wk},${dy},${i})" class="bg-blue-50 text-blue-600 p-2 rounded-xl"><i data-lucide="edit-3" class="w-4 h-4"></i></button></div>`).join('') + `<button onclick="openEditDiet(${wk},${dy},-1)" class="w-full py-4 bg-green-50 text-green-700 font-black rounded-2xl text-[10px] uppercase">+ Nova Refeição</button>`;
             lucide.createIcons();
         }
 
-        function renderAdmin() {
-            document.getElementById('admin-list').innerHTML = workoutSchedules.map((w, wi) => `
-                <div class="bg-white p-5 rounded-3xl border-2 border-slate-50 shadow-sm">
-                    <h3 class="font-black text-roxo-900 mb-3 uppercase tracking-tighter">${w.title}</h3>
-                    <div class="space-y-2">
-                        ${w.routine.map((ex, ei) => `<div class="flex justify-between items-center text-xs py-2 border-b border-slate-50"><span class="font-bold text-slate-700">${ex.name}</span><button onclick="openEditEx(${wi},${ei})" class="text-blue-500 font-black uppercase text-[9px]">Editar</button></div>`).join('')}
-                    </div>
-                    <button onclick="openEditEx(${wi}, -1)" class="w-full mt-4 text-roxo-700 font-black py-3 bg-purple-50 rounded-2xl text-[9px] uppercase tracking-widest">+ Adicionar</button>
-                </div>
-            `).join('');
-        }
-
-        // --- AUXILIARES E EVENTOS ---
-        function handleFileUpload(e, id) {
-            const f = e.target.files[0]; if(!f) return;
-            const r = new FileReader(); r.onload = (ev) => document.getElementById(id).value = ev.target.result;
-            r.readAsDataURL(f);
-        }
-        function openImageViewer(url) {
-            const cont = document.getElementById('viewer-container');
-            const isVideo = url.includes('video') || url.startsWith('data:video');
-            cont.innerHTML = isVideo ? `<video src="${url}" controls autoplay class="rounded-3xl shadow-2xl"></video>` : `<img src="${url}" class="rounded-3xl shadow-2xl">`;
-            document.getElementById('image-viewer-modal').classList.remove('hidden');
-            lucide.createIcons();
-        }
-        function closeImageViewer() { document.getElementById('image-viewer-modal').classList.add('hidden'); }
+        function checkPassword() { if(document.getElementById('admin-pass-input').value === '1234') { closePasswordModal(); switchTab('admin'); } }
         function openPasswordModal() { document.getElementById('password-modal').classList.remove('hidden'); document.getElementById('admin-pass-input').value = ""; }
         function closePasswordModal() { document.getElementById('password-modal').classList.add('hidden'); }
-        function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
         function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
-        function openEditDiet() { document.getElementById('admin-diet-modal').classList.remove('hidden'); }
-        function closeAdminDietModal() { document.getElementById('admin-diet-modal').classList.add('hidden'); }
-        
-        function switchAdminTab(t) {
-            document.getElementById('admin-treinos-section').classList.toggle('hidden', t !== 'treinos');
-            document.getElementById('admin-dietas-section').classList.toggle('hidden', t !== 'dietas');
-            document.getElementById('admin-nav-treinos').classList.toggle('bg-white', t === 'treinos');
-            document.getElementById('admin-nav-treinos').classList.toggle('text-roxo-700', t === 'treinos');
-            document.getElementById('admin-nav-dietas').classList.toggle('bg-white', t === 'dietas');
-            document.getElementById('admin-nav-dietas').classList.toggle('text-roxo-700', t === 'dietas');
-            if(t === 'dietas') renderAdminDiet();
-        }
-
-        function finishWorkout() { document.getElementById('success-modal').classList.remove('hidden'); }
-        function closeSuccessModal() {
-            const completed = JSON.parse(localStorage.getItem('done_wk_' + getWeekNumber()) || "[]");
-            if(!completed.includes(currentWkIdx)) completed.push(currentWkIdx);
-            localStorage.setItem('done_wk_' + getWeekNumber(), JSON.stringify(completed));
-            document.getElementById('success-modal').classList.add('hidden');
-            switchTab('home');
-            initApp();
-        }
-
-        function getWeekNumber() {
-            const d = new Date(); d.setHours(0,0,0,0);
-            d.setDate(d.getDate() + 4 - (d.getDay()||7));
-            return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
-        }
-
-        // --- PERSISTÊNCIA DE ADMIN (CRUD SIMPLIFICADO) ---
-        let editWi, editEi;
-        function openEditEx(wi, ei) {
-            editWi = wi; editEi = ei;
-            if(ei === -1) {
-                document.getElementById('admin-name').value = ""; document.getElementById('admin-sets').value = "4";
-                document.getElementById('admin-reps').value = "15"; document.getElementById('admin-tech').value = "Normal";
-                document.getElementById('admin-media').value = ""; document.getElementById('admin-desc').value = "";
-            } else {
-                const ex = workoutSchedules[wi].routine[ei];
-                const db = exercisesDb[ex.name] || {};
-                document.getElementById('admin-name').value = ex.name; document.getElementById('admin-sets').value = ex.sets;
-                document.getElementById('admin-reps').value = ex.reps; document.getElementById('admin-tech').value = ex.tech;
-                document.getElementById('admin-media').value = db.media || ""; document.getElementById('admin-desc').value = db.desc || "";
-            }
-            openAdminModal();
-        }
-        function saveAdminEx() {
-            const name = document.getElementById('admin-name').value;
-            exercisesDb[name] = { desc: document.getElementById('admin-desc').value, media: document.getElementById('admin-media').value };
-            const exData = { name, sets: document.getElementById('admin-sets').value, reps: document.getElementById('admin-reps').value, tech: document.getElementById('admin-tech').value };
-            if(editEi === -1) workoutSchedules[editWi].routine.push(exData);
-            else workoutSchedules[editWi].routine[editEi] = exData;
-            closeAdminModal(); renderAdmin(); selectWorkout(currentWkIdx);
-        }
-
-        let editDietPos = { wk:0, dy:0, mi:0 };
-        function openEditDiet(wk, dy, mi) {
-            editDietPos = { wk, dy, mi };
-            if(mi === -1) {
-                document.getElementById('admin-diet-time').value = ""; document.getElementById('admin-diet-name').value = "";
-                document.getElementById('admin-diet-details').value = ""; document.getElementById('admin-diet-ingredients').value = "";
-                document.getElementById('admin-diet-recipe').value = ""; document.getElementById('admin-diet-media').value = "";
-            } else {
-                const m = dietPlans[wk].days[dy].meals[mi];
-                document.getElementById('admin-diet-time').value = m.time; document.getElementById('admin-diet-name').value = m.name;
-                document.getElementById('admin-diet-details').value = m.details; document.getElementById('admin-diet-ingredients').value = m.ingredients;
-                document.getElementById('admin-diet-recipe').value = m.recipe; document.getElementById('admin-diet-media').value = m.media;
-            }
-            document.getElementById('admin-diet-modal').classList.remove('hidden');
-        }
-        function saveAdminDietMeal() {
-            const m = { 
-                time: document.getElementById('admin-diet-time').value, name: document.getElementById('admin-diet-name').value,
-                details: document.getElementById('admin-diet-details').value, ingredients: document.getElementById('admin-diet-ingredients').value,
-                recipe: document.getElementById('admin-diet-recipe').value, media: document.getElementById('admin-diet-media').value
-            };
-            if(editDietPos.mi === -1) dietPlans[editDietPos.wk].days[editDietPos.dy].meals.push(m);
-            else dietPlans[editDietPos.wk].days[editDietPos.dy].meals[editDietPos.mi] = m;
-            closeAdminDietModal(); renderAdminDiet(); selectDietDay(currentDietDayIdx);
-        }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-        function installApp() { 
-            if(deferredPrompt) deferredPrompt.prompt(); 
-            else alert("Para iPhone: Clique em Partilhar > Adicionar à Tela de Início."); 
-        }
+        function handleFileUpload(e, id) { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (ev) => document.getElementById(id).value = ev.target.result; r.readAsDataURL(f); }
+        function openImageViewer(u) { const cont = document.getElementById('viewer-container'); cont.innerHTML = `<img src="${u}" class="rounded-3xl">`; document.getElementById('image-viewer-modal').classList.remove('hidden'); }
+        function closeImageViewer() { document.getElementById('image-viewer-modal').classList.add('hidden'); }
+        function openTechniqueModal() { alert("Foco na execução, Gaby!"); }
+        function finishWorkout() { alert("TREINO PAGO!"); switchTab('home'); }
+        function switchAdminTab(t) { document.getElementById('admin-treinos-section').classList.toggle('hidden', t !== 'treinos'); document.getElementById('admin-dietas-section').classList.toggle('hidden', t !== 'dietas'); }
 
         window.onload = initApp;
     </script>
