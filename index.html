@@ -2,8 +2,19 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>My Family Personal</title>
+    
+    <!-- Meta Tags para Instalação como App (PWA) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#7e22ce">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=MFP&background=7e22ce&color=fff&size=192">
+    
+    <!-- Manifest correto e limpo apontando para o arquivo JSON -->
+    <link rel="manifest" href="./manifest.json">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Configuração de cores personalizadas -->
     <script>
@@ -54,25 +65,28 @@
         }
     </style>
 </head>
-<body class="bg-lilas text-slate-800 font-sans h-screen flex justify-center overflow-hidden">
+<body class="bg-slate-100 text-slate-800 font-sans h-[100dvh] flex justify-center overflow-hidden">
 
-    <!-- Container simulando tela de celular -->
+    <!-- Container simulando tela de celular com altura adaptável (100dvh) -->
     <div class="w-full max-w-md bg-lilas h-full flex flex-col relative shadow-2xl overflow-hidden">
         
         <!-- Header -->
         <header class="bg-roxo-700 text-white p-5 pt-8 rounded-b-[2rem] shadow-lg z-10">
             <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h1 class="text-2xl font-bold tracking-tight">My Family Personal</h1>
-                    <p class="text-purple-200 text-sm opacity-90">Foco no Emagrecimento</p>
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=MFP&background=ffffff&color=7e22ce&size=128&rounded=true" alt="Logo MFP" class="w-10 h-10 rounded-full shadow-md border-2 border-roxo-500">
+                    <div>
+                        <h1 class="text-2xl font-bold tracking-tight">My Family Personal</h1>
+                        <p class="text-purple-200 text-sm opacity-90">Foco no Emagrecimento</p>
+                    </div>
                 </div>
                 <div class="flex items-center gap-2">
+                    <button onclick="installApp()" id="install-btn" class="bg-white/20 p-2 rounded-full backdrop-blur-sm hover:bg-white/30 transition text-green-300" title="Baixar App">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                    </button>
                     <button onclick="openPasswordModal()" class="bg-white/20 p-2 rounded-full backdrop-blur-sm hover:bg-white/30 transition">
                         <i data-lucide="settings" class="text-white w-5 h-5"></i>
                     </button>
-                    <div class="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-                        <i data-lucide="flame" class="text-orange-400 w-6 h-6"></i>
-                    </div>
                 </div>
             </div>
         </header>
@@ -150,7 +164,7 @@
                     </button>
                 </div>
 
-                <!-- Abas de Navegação dos Treinos (Agora com flex-wrap para mostrar todos) -->
+                <!-- Abas de Navegação dos Treinos -->
                 <div id="workout-tabs" class="flex flex-wrap gap-2 mb-2 pb-2">
                     <!-- Os botões A, B, C, D e E serão injetados aqui via JS -->
                 </div>
@@ -178,7 +192,7 @@
                     </div>
                 </div>
 
-                <!-- Abas de Navegação das Dietas (Agora com flex-wrap para mostrar todas) -->
+                <!-- Abas de Navegação das Dietas -->
                 <div id="diet-tabs" class="flex flex-wrap gap-2 mb-4 pb-2">
                     <!-- Gerado via JS -->
                 </div>
@@ -263,7 +277,7 @@
         </div>
 
         <!-- Modal Admin Editar Exercício -->
-        <div id="admin-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in">
+        <div id="admin-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in z-[60]">
             <div class="bg-white rounded-3xl p-6 max-w-md w-[90%] shadow-2xl max-h-[90vh] overflow-y-auto">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-bold text-roxo-900">Editar Exercício</h3>
@@ -305,7 +319,7 @@
         </div>
 
         <!-- Modal Admin Editar Dieta -->
-        <div id="admin-diet-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in">
+        <div id="admin-diet-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in z-[60]">
             <div class="bg-white rounded-3xl p-6 max-w-md w-[90%] shadow-2xl max-h-[90vh] overflow-y-auto">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-bold text-roxo-900">Editar Refeição</h3>
@@ -341,7 +355,7 @@
         </div>
 
         <!-- Modal de Senha Admin -->
-        <div id="password-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in z-[60]">
+        <div id="password-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in z-[70]">
             <div class="bg-white rounded-3xl p-6 max-w-xs w-[90%] text-center shadow-2xl">
                 <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i data-lucide="lock" class="w-8 h-8 text-roxo-700"></i>
@@ -357,9 +371,73 @@
             </div>
         </div>
 
+        <!-- Modal de Instrução de Download -->
+        <div id="install-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center fade-in z-[80]">
+            <div class="bg-white rounded-3xl p-6 max-w-sm w-[90%] text-center shadow-2xl">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="smartphone" class="w-8 h-8 text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-roxo-900 mb-2">Baixar o App</h3>
+                <p class="text-sm text-slate-600 mb-4">Para instalar o My Family Personal no seu telemóvel, siga os passos:</p>
+                
+                <div class="text-left bg-slate-50 p-4 rounded-xl mb-4 border border-slate-100">
+                    <p class="text-sm font-bold text-slate-800 mb-1">No iPhone (Safari):</p>
+                    <p class="text-xs text-slate-600 mb-3">1. Toque no ícone de "Partilhar" (quadrado com seta para cima) na barra inferior.<br>2. Escolha <b>"Adicionar à Tela de Início"</b>.</p>
+                    
+                    <p class="text-sm font-bold text-slate-800 mb-1">No Android (Chrome):</p>
+                    <p class="text-xs text-slate-600">1. Toque nos 3 pontinhos no canto superior direito.<br>2. Selecione <b>"Adicionar à tela inicial"</b> ou <b>"Instalar aplicativo"</b>.</p>
+                </div>
+
+                <button onclick="closeInstallModal()" class="bg-roxo-700 text-white w-full py-3 rounded-xl font-bold shadow-md">
+                    Entendido!
+                </button>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        // --- LÓGICA DE INSTALAÇÃO (PWA E SERVICE WORKER) ---
+        
+        // Registo do Service Worker (Obrigatório para Apps funcionarem offline)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(registration => {
+                    console.log('Service Worker registado com sucesso!');
+                }).catch(error => {
+                    console.log('Falha ao registar o Service Worker:', error);
+                });
+            });
+        }
+
+        let deferredPrompt;
+
+        // Ouve se o Android quiser oferecer a instalação automática
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                // Abre o popup nativo de instalação no Android/Chrome
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('App instalado!');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Se for iPhone/Safari ou PC, mostra as instruções
+                document.getElementById('install-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeInstallModal() {
+            document.getElementById('install-modal').classList.add('hidden');
+        }
+
         // --- BANCO DE DADOS LOCAL (INTELIGÊNCIA DO APP) ---
 
         const quotes = [
@@ -440,7 +518,8 @@
                     { name: "Cadeira Flexora", sets: "4 séries", reps: "15", tech: "Normal" },
                     { name: "Desenvolvimento com Halteres", sets: "4 séries", reps: "12", tech: "Normal" },
                     { name: "Elevação Lateral", sets: "4 séries", reps: "15", tech: "Normal" },
-                    { name: "Face Pull", sets: "4 séries", reps: "15", tech: "Normal" }
+                    { name: "Face Pull", sets: "4 séries", reps: "15", tech: "Normal" },
+                    { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
                 ]
             },
             { 
@@ -452,7 +531,8 @@
                     { name: "Crossover na Polia", sets: "4 séries", reps: "15", tech: "Normal" },
                     { name: "Rosca Direta Polia", sets: "4 séries", reps: "12", tech: "Normal" },
                     { name: "Rosca Martelo 21", sets: "4 séries", reps: "21 reps", tech: "21" },
-                    { name: "Rosca Concentrada", sets: "3 séries", reps: "12", tech: "Normal" }
+                    { name: "Rosca Concentrada", sets: "3 séries", reps: "12", tech: "Normal" },
+                    { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
                 ]
             },
             { 
@@ -465,7 +545,8 @@
                     { name: "Agachamento Búlgaro", sets: "4 séries", reps: "10 a 12 (cada perna)", tech: "Normal" },
                     { name: "Glúteos 4 Apoios Coice", sets: "4 séries", reps: "15", tech: "Normal" },
                     { name: "Glúteos Coice na Polia", sets: "4 séries", reps: "12", tech: "Drop-set" },
-                    { name: "Abdução de Quadril", sets: "4 séries", reps: "20", tech: "Normal" }
+                    { name: "Abdução de Quadril", sets: "4 séries", reps: "20", tech: "Normal" },
+                    { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
                 ]
             },
             { 
@@ -477,7 +558,8 @@
                     { name: "Remada Curvada", sets: "4 séries", reps: "12", tech: "Normal" },
                     { name: "Tríceps Polia Corda", sets: "4 séries", reps: "15", tech: "Normal" },
                     { name: "Tríceps Testa", sets: "4 séries", reps: "12", tech: "Normal" },
-                    { name: "Tríceps Francês", sets: "3 séries", reps: "15", tech: "Drop-set" }
+                    { name: "Tríceps Francês", sets: "3 séries", reps: "15", tech: "Drop-set" },
+                    { name: "Esteira HIIT", sets: "1 série", reps: "20 min", tech: "HIIT" }
                 ]
             },
             { 
